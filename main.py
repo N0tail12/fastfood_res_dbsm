@@ -3,11 +3,8 @@ from tabulate import tabulate
 from datetime import date
 
 
-# def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
-#    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
-#    return conn
-def connect_to_db(url):
-    conn = psycopg2.connect(url)
+def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
     return conn
 
 
@@ -91,11 +88,15 @@ def check_account(conn, username, userpass):
     return check
 
 
+def sale_by_day():
+    pass
+
+
 def login(conn):
-    username = input("Enter your email or user name: ")
+    username = input("Enter your email or username: ")
     userpass = input("Enter your password: ")
     i = check_account(conn, username, userpass)
-    select_1 = select_2 = 5,
+    select_1 = select_2 = select_3 = 5,
     count = 0
     while i == 0 and count < 3:
         print("Please enter again!")
@@ -130,32 +131,32 @@ def login(conn):
                 check = insert(conn, f"INSERT INTO customer_info VALUES ('{email}','{fname}','{lname}','{password}','{phone}','{city}','{town}','Active');")
     elif i == 1:
         while select_1 != 5:
-            print("-----------MENU:----------\n")
+            print("-----------CUSTOMER MENU:----------\n")
             print("1. Customer information")
             print("2. Show your previous order")
             print("3. Order")
             print("4. Check your present order")
             print("5. Exit\n")
-            select_1 = int(input("Select: "))
+            select_1 = int(input("Enter your choice: "))
             if select_1 == 1 : show_info_customer(conn, username)
             elif select_1 == 2 : show_old_order(conn, username)
             elif select_1 == 3 : order(conn, username)
             elif select_1 == 4 : check_present_order(conn, username)
-            while select_1 < 1 or select_1 > 6:
-                print("Lua chon khong hop le!")
-                select_1 = input("Nhap lua chon cua ban: ")
+            while select_1 < 1 or select_1 > 5:
+                print("Invalid selection!")
+                select_1 = input("Enter your choice: ")
     elif i == 2:
         while select_2 != 5:
-            print("-----------Chon chuc nang:----------\n")
-            print("1. Thong tin ca nhan")
-            print("2. Kiem tra cac don hang")
-            print('3. Hoan thanh Oder')
-            print("4. Kiem tra don hang nao da hoan thanh va co the giao trong ngay hom nay")
-            print("5. Thoat\n")
-            select_2 = int(input("Nhap lua chon cua ban: "))
+            print("-----------EMPLOYEE MENU----------\n")
+            print("1. Employee Information")
+            print("2. Check order")
+            print('3. Complete order')
+            print("4. Show order can be delivery today")
+            print("5. Exit\n")
+            select_2 = int(input("Enter your choice: "))
             while select_2 < 1 or select_2 > 6:
-                print("Lua chon khong hop le!")
-                select_2 = input("Nhap lua chon cua ban: ")
+                print("Invalid selection!")
+                select_2 = input("Enter your choice: ")
             if select_2 == 1:
                 show_employee_info(conn, username)
             if select_2 == 2:
@@ -164,6 +165,41 @@ def login(conn):
                 complete_order(conn)
             if select_2 == 4:
                 check_order(conn)
+    elif i == 3:
+        while select_3 != 5:
+            print("-----------MANAGER MENU----------\n")
+            print("1. Database Management")
+            print("2. Sales Management")
+            print("3. Overview of sales areas")
+            print("4. Exit\n")
+            select_3 = int(input("Enter your choice: "))
+            while select_3 < 1 or select_3 > 4:
+                print("Invalid selection!")
+                select_3 = input("Enter your choice: ")
+            if select_3 == 1:
+                print("-----------Database Management----------\n")
+                print("1. Customer Information Management")
+                print("2. Personnel Management")
+                print("3. Show Order Information")
+                print("4. Edit Menu")
+                print("5. Exit\n")
+                select_3_ = int(input("Enter your choice: "))
+                while select_3_ < 1 or select_3_ > 5:
+                    print("Invalid selection!")
+                    select_3_ = input("Enter your choice: ")
+            if select_3 == 2:
+                print("-----------Sales Management----------\n")
+                sale_by_day()
+            if select_3 == 3:
+                print("-----------Overview of sales areas----------\n")
+                print("1. Most cancel area")
+                print("2. Number of dishes sold in each area")
+                print("3. Top 3 towns have the most customers")
+                print("4. Exit\n")
+                select_3_ = int(input("Enter your choice: "))
+                while select_3_ < 1 or select_3_ > 5:
+                    print("Invalid selection!")
+                    select_3_ = input("Enter your choice: ")
 
 
 def check_order(conn):
@@ -351,7 +387,7 @@ def check_present_order(conn, username):
 
 
 def main():
-    conn = connect_to_db("postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj")
+    conn = connect_to_db('res', 'postgres', 'admin', 'localhost')
     login(conn)
     disconnect_to_db(conn)
 
