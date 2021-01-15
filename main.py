@@ -3,8 +3,11 @@ from tabulate import tabulate
 from datetime import date
 
 
-def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
-    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+# def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
+#    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+#    return conn
+def connect_to_db(url):
+    conn = psycopg2.connect(url)
     return conn
 
 
@@ -38,31 +41,61 @@ def insert(conn, query_string):
 
 def check_account(conn, username, userpass):
     customer_info = query(conn, "select email, pass, fname, status from customer_info")
+    management_info = query(conn, "select user_id, pass, user_name,designation, status from management")
     check = 0
+    name = ''
+    designation = ''
+    # check custtomer account
     for account in customer_info:
         for user in account:
             if username == user[0] and userpass == user[1]:
                 if user[3] == 'Active':
                     check = 1
                     name = user[2]
-                    print(f"Login sucessfully!\n Hello, {name}!")
                     break
                 else:
-                    check = 0
-                    print("Your account has been blocked!")
-                    print("Because you cancel orders too much!")
-                    break
-    if check == 0:
+                    check = -1
+    # check employee and manager account
+    for account in management_info:
+        for empl in account:
+            if username == empl[0] and userpass == empl[1]:
+                if empl[4] != 'Blkd':
+                    check = 2
+                    name = empl[2]
+                    designation = empl[3]
+                    if empl[3] == 'Manager':
+                        check = 3
+                else:
+                    check = -2
+    # customer login successfull
+    if check == 1:
+        print(f"Login successfully!\nHello, {name}!")
+    # employee login successful
+    elif check == 2:
+        print(f"Login successfully!\nHello, {name}!")
+        print(f"Your designation is: {designation}")
+    # manager login successful
+    elif check == 3:
+        print(f'Login successfully!\nHello, {designation} {name}')
+    # customer login block
+    elif check == -1:
+        print("Your account has been blocked!")
+        print("Because you cancel orders too much!")
+    # employee login fail
+    elif check == -2:
+        print("Your account has been blocked!")
+
+    else:
         print("Username or password is incorrect!")
 
     return check
 
 
-def customer_login(conn):
-    username = input("Enter your email: ")
+def login(conn):
+    username = input("Enter your email or user name: ")
     userpass = input("Enter your password: ")
     i = check_account(conn, username, userpass)
-    select = 5,
+    select_1 = select_2 = 5,
     count = 0
     while i == 0 and count < 3:
         print("Please enter again!")
@@ -70,6 +103,9 @@ def customer_login(conn):
         userpass = input("Enter your password: ")
         i = check_account(conn, username, userpass)
         count += 1
+    if i == -1:
+        print("Goodbye!")
+        return
     if count == 3:
         char = input("Do you want to create a new account! (y/n)")
         while char != 'y' and char != 'n':
@@ -92,22 +128,107 @@ def customer_login(conn):
                 city = input("Enter your city:")
                 town = input("Enter your town:")
                 check = insert(conn, f"INSERT INTO customer_info VALUES ('{email}','{fname}','{lname}','{password}','{phone}','{city}','{town}','Active');")
+    elif i == 1:
+        while select_1 != 5:
+            print("-----------MENU:----------\n")
+            print("1. Customer information")
+            print("2. Show your previous order")
+            print("3. Order")
+            print("4. Check your present order")
+            print("5. Exit\n")
+            select_1 = int(input("Select: "))
+            if select_1 == 1 : show_info_customer(conn, username)
+            elif select_1 == 2 : show_old_order(conn, username)
+            elif select_1 == 3 : order(conn, username)
+            elif select_1 == 4 : check_present_order(conn, username)
+            while select_1 < 1 or select_1 > 6:
+                print("Lua chon khong hop le!")
+                select_1 = input("Nhap lua chon cua ban: ")
+    elif i == 2:
+        while select_2 != 5:
+            print("-----------Chon chuc nang:----------\n")
+            print("1. Thong tin ca nhan")
+            print("2. Kiem tra cac don hang")
+            print('3. Hoan thanh Oder')
+            print("4. Kiem tra don hang nao da hoan thanh va co the giao trong ngay hom nay")
+            print("5. Thoat\n")
+            select_2 = int(input("Nhap lua chon cua ban: "))
+            while select_2 < 1 or select_2 > 6:
+                print("Lua chon khong hop le!")
+                select_2 = input("Nhap lua chon cua ban: ")
+            if select_2 == 1:
+                show_employee_info(conn, username)
+            if select_2 == 2:
+                show_order(conn)
+            if select_2 == 3:
+                complete_order(conn)
+            if select_2 == 4:
+                check_order(conn)
 
-    while select != 5:
-        print("-----------Chon chuc nang:----------\n")
-        print("1. Thong tin ca nhan")
-        print("2. Xem lai cac don hang")
-        print("3. Dat hang")
-        print("4. Kiem tra don hien tai")
-        print("5. Thoat\n")
-        select = int(input("Nhap lua chon cua ban: "))
-        if select == 1 : show_info_customer(conn, username)
-        elif select == 2 : show_old_order(conn, username)
-        elif select == 3 : order(conn, username)
-        elif select == 4 : check_present_order(conn, username)
-        while select < 1 or select > 6:
-            print("Lua chon khong hop le!")
-            select = input("Nhap lua chon cua ban: ")
+
+def check_order(conn):
+    lst = query(conn, "select order_items.order_id, quantity, status, torcv, todel \
+                       from order_info, order_items \
+                       where status = 'Ready' and  order_items.order_id = order_info.order_id and todel = current_date")
+    for items in lst:
+            print(tabulate(items, headers=['Order ID', 'Quantity', 'Status', 'Order Date', 'Delivery Day']))
+    r = input("Press any key to continue!")
+
+
+def complete_order(conn):
+    order_in = input("Enter order id: ")
+    order_inf = query(conn, f"select order_info.order_id, email, item_id, quantity, status, user_id, torcv, todel\
+                            from order_info, order_items \
+                            where order_info.order_id = order_items.order_id and order_info.order_id = '{order_in}'")
+    for items in order_inf:
+        for item in items:
+            if item[4] == 'Ready':
+                print("The Order is already done, you can not change it anymore")
+                return
+            else:
+                print("------------------------------------")
+                print(f"Order ID: {item[0]}")
+                print(f"Customer's Email: {item[1]}")
+                print(f"Item ID: {item[2]}")
+                print(f"Quantity: {item[3]}")
+                print(f"Status: {item[4]}")
+                print(f"User ID: {item[5]}")
+                print(f"Order Day: {item[6]}")
+                print(f"Delivery Day: {item[7]}")
+                print("------------------------------------")
+    print("Confirm change order?(y/n): ")
+    cf = input()
+    if cf == 'n':
+        print("Cancel!")
+    if cf == 'y':
+        insert(conn, f"UPDATE order_items SET status = 'Ready' WHERE order_id = '{order_in}'")
+        print("Complete")
+    r = input("Press ENTER to continue!")
+
+
+def show_order(conn):
+    order_inf = query(conn, "select order_info.order_id, email, item_id, quantity, status, user_id, torcv, todel\
+                            from order_info, order_items \
+                            where order_info.order_id = order_items.order_id")
+    print("----------------------------------------------------")
+    print("---------------------ORDER INFO---------------------")
+
+    for items in order_inf:
+        print(tabulate(items, headers=['Order Id', 'Email', 'Item ID', 'Quantity',
+                                       'Status', 'User ID', 'Order Date', 'Deliver Date']))
+
+
+def show_employee_info(conn, user_id):
+    empl_info = query(conn, f"select user_id, user_name, designation, status from management where user_id = '{user_id}'")
+    for items in empl_info:
+        for item in items:
+            print("------------------------------------")
+            print(f"Id: {item[0]}")
+            print(f"Name: {item[1]}")
+            print(f"Designation: {item[2]}")
+            print(f"Status: {item[3]}")
+            print("------------------------------------")
+            r = input("Press any key to continue!")
 
 
 def show_info_customer(conn, email):
@@ -230,8 +351,8 @@ def check_present_order(conn, username):
 
 
 def main():
-    conn = connect_to_db('res', 'postgres', 'admin', 'localhost')
-    customer_login(conn)
+    conn = connect_to_db("postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj")
+    login(conn)
     disconnect_to_db(conn)
 
 
