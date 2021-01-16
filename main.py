@@ -714,7 +714,29 @@ def add_dish(conn):
 
 
 def change_dish(conn):
-    head = ['']
+    lst = query(conn, "select item_id,item_name, description, price, catagory, status, user_id from menu")
+    item_id = input("Enter item_id: ")
+    count = 0
+    while count == 0:
+        for items in lst:
+            for item in items:
+                if item_id == item[0]:
+                    print("Found!")
+                    count += 1
+        if count == 0:
+            print("Can't find!. Please enter again")
+            item_id = input("Enter item_id: ")
+    head = ['item_name', 'description', 'price', 'catagory', 'status']
+    select = input("Enter the field you want to change: ")
+    while select not in head:
+        print("Unavailable field. Please enter again or try another field")
+        select = input("Enter the field you want to change: ")
+    if select in head:
+        values = input("Enter the values: ")
+        if select == 'status' and values != 'Available' and values != 'UnAvailable':
+            print("Values is not suitable. Only 'Available' or 'UnAvailable' is except!")
+            values = input("Enter the values: ")
+        insert(conn, f"update menu set {select} = '{values}' where item_id = '{item_id}'")
 
 
 def delete_dish(conn):
