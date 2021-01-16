@@ -322,6 +322,7 @@ def is_day(string):
 
 
 def sale_by_day(conn):
+    day_start = day_end = ''
     i = 0
     while i == 0:
         day_start = input("Choose day start: (YYYY-MM-DD) ")
@@ -637,6 +638,7 @@ def delete_employ(conn):
 
 
 def num_order(conn):
+    day_start = day_end = ''
     i = 0
     while i == 0:
         day_start = input("Choose day start: (YYYY-MM-DD) ")
