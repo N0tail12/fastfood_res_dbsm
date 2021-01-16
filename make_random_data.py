@@ -2,8 +2,18 @@ import random
 
 
 def randstring(length):
-    valid_letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    valid_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return ''.join((random.choice(valid_letters) for i in range(length)))
+
+
+def randemails(num):
+    lst_email = []
+    for i in range(num):
+        email = random.choice(['nguyen', 'luu', 'le', 'phung', 'lai', 'pham', 'tran', 'duong']) + \
+                random.choice(['hieu', 'dat', 'huyen', 'dai', 'long', 'phuc', 'quang', 'truong', 'nghia', 'duc']) + \
+                randnumber(3) + '@gmail.com'
+        lst_email.append(email)
+    return lst_email
 
 
 def randnumber(length):
@@ -12,31 +22,32 @@ def randnumber(length):
 
 
 def make_data_customer_info(num):
-    #INSERT INTO customer_info
-    #VALUES ('rksazid@gmail.com','MD.REZAUL','KARIM','rksazid123','01521453995','TELIGATI','Khulna','Active');
+    # INSERT INTO customer_info
+    # VALUES ('rksazid@gmail.com','MD.REZAUL','KARIM','rksazid123','01521453995','TELIGATI','Khulna','Active');
     towns = ['Bach Khoa', 'Cau Giay', 'Ba Dinh', 'Hoan Kiem', 'Long Bien', 'Hoang Mai', 'Thanh Tri', 'Ha Dong']
     city = 'Ha Noi'
-    last_mail = '@gmail.com'
-    userpasswords = ['abcd1234', '12345678', 'asdfqwer', 'qwer1234', '1234asdf', 'sdfqwer12']
     emails = []
-    with open('database/customer_info.sql', 'w+') as f:
+    with open('database_insert.sql', 'w+') as f:
         for i in range(num):
-            email = randstring(random.choice([8, 9, 10])) + last_mail
+            fname = random.choice(['Hieu', 'Dat', 'Huyen', 'Dai', 'Long', 'Phuc', 'Quang', 'Truong', 'Nghia', 'Duc'])
+            middle_name = random.choice(['Hoang', 'Thanh', 'Thang', 'Long', 'Minh', 'Xuan', 'Khanh'])
+            first_name = middle_name + ' ' + fname
+            last_name = random.choice(['Nguyen', 'Luu', 'Le', 'Phung', 'Lai', 'Pham', 'Tran', 'Duong'])
+            email = str.lower(fname + last_name + randnumber(5) + '@gmail.com')
             emails.append(email)
-            first_name = randstring(8)
-            last_name = randstring(5)
-            userpassword = random.choice(userpasswords)
+            password = 'qwer1234'
             number = '0' + randnumber(9)
             town = random.choice(towns)
-            f.write(f"INSERT INTO customer_info VALUES ('{email}','{first_name}','{last_name}','{userpassword}','{number}','{city}','{town}','Active');\n")
+            f.write(
+                f"INSERT INTO customer_info VALUES ('{email}','{first_name}','{last_name}','{password}','{number}','{city}','{town}','Active');\n")
     return emails
 
 
 def make_data_order_info(num, emails):
-    #INSERT INTO order_info VALUES ('1000','dipto.8081@gmail.com','4-APR-2017','5-APR-2017');
-    max = 2000 + num
-    with open('database/order_info.sql', 'w+') as f:
-        for order_id in range(2000, max):
+    # INSERT INTO order_info VALUES ('1000','dipto.8081@gmail.com','4-APR-2017','5-APR-2017');
+    max = 1000 + num
+    with open('database_insert.sql', 'a+') as f:
+        for order_id in range(1000, max + 1):
             email = random.choice(emails)
             year = '2020'
             month = random.choice(range(1, 12))
@@ -49,37 +60,45 @@ def make_data_order_info(num, emails):
 
 
 def make_data_management(num):
-    #INSERT INTO management VALUES ('Masud','m12345','Masud Rana','Active','Employee');
+    # INSERT INTO management VALUES ('Masud','m12345','Masud Rana','Active','Employee');
     cook_user_ids = []
-    with open('database/management.sql', 'w+') as f:
+    with open('database_insert.sql', 'a+') as f:
         for i in range(num):
-            user_id = randstring(random.choice([6, 7, 8, 9]))
-            user_pass = user_id + '123'
-            name = random.choice(['Nguyen', 'Luu', 'Le', 'Phung', 'Lai', 'Pham'])+' '+random.choice(['Van', 'Minh', 'Xuan', 'Duy', 'Hoang', 'Phuc', 'Quang', 'Hong'])+' '+random.choice(['Hieu', 'Dat', 'Huyen', 'Dai', 'Long', 'Phuc', 'Quang', 'Truong'])
-            role = random.choice(['Cook','Employee'])
+            lname = random.choice(['Nguyen', 'Luu', 'Le', 'Phung', 'Lai', 'Pham'])
+            mname = random.choice(['Van', 'Minh', 'Xuan', 'Duy', 'Hoang', 'Phuc', 'Quang', 'Hong'])
+            fname = random.choice(['Hieu', 'Dat', 'Huyen', 'Dai', 'Long', 'Phuc', 'Quang', 'Truong'])
+            name = lname + ' ' + mname + ' ' + fname
+            user_id = str.lower(fname + lname + randnumber(3))
+            user_pass = 'qwer1234'
+            role = random.choice(['Cook', 'Employee'])
             if role == 'Cook': cook_user_ids.append(user_id)
             f.write(
-                f"INSERT INTO management VALUES ('{user_id}','{user_pass}','{name}','Actv','{role}');\n")
+                f"INSERT INTO management VALUES ('{user_id}','{user_pass}','{name}','Active','{role}');\n")
+        f.write("INSERT INTO management VALUES ('lolicon1311','qwer1234','Nguyen Minh Hieu','Active','Manager');\n")
+        f.write("INSERT INTO management VALUES ('datlt132','qwer1234','Luu Thanh Dat','Active','Manager');\n")
     return cook_user_ids
 
 
 def make_data_menu():
-    #INSERT INTO menu VALUES ('20001','Shami Kabab','Kabab',60,'Fastfood','Available','HasibIq');
-    item_names = ['Ga Ran Gion','Ga Sot Dau','Pizza Ga', 'Burger Ga', 'Coca', 'Pepsi', 'Tra Dao', 'Tra Chanh', 'Tra Quat', 'Kem']
+    # INSERT INTO menu VALUES ('20001','Shami Kabab','Kabab',60,'Fastfood','Available','HasibIq');
+    item_names = ['Ga Ran Gion', 'Ga Sot Dau', 'Pizza Ga', 'Burger Ga', 'Coca', 'Pepsi', 'Tra Dao', 'Tra Chanh',
+                  'Tra Quat', 'Kem']
     descriptions = ['Ga', 'Ga', 'Ga', 'Ga', 'Co gas', 'Co gas', 'Khong gas', 'Khong gas', 'Khong gas', 'Kem tuoi']
-    prices = [39, 43, 32, 31, 10, 10, 12, 12, 12, 5]
-    with open('database/menu.sql', 'w+') as f:
+    prices = [39000, 43000, 32000, 31000, 10000, 10000, 12000, 12000, 12000, 5000]
+    with open('database_insert.sql', 'a+') as f:
         for i in range(10):
             item_id = i + 30000
+            user_id = random.choice(['datlt132', 'lolicon1311'])
             f.write(
-                f"INSERT INTO menu VALUES ('{item_id}','{item_names[i]}','{descriptions[i]}','{prices[i]}','fastfood','Available','HasibIq');\n")
+                f"INSERT INTO menu VALUES ('{item_id}','{item_names[i]}','{descriptions[i]}','{prices[i]}',\
+                                            'fastfood', 'Available', '{user_id}');\n")
 
 
 def make_data_order_items(num, cook_user_ids):
-    max = 2000 + num
-    #INSERT INTO order_items VALUES ('1000','20003',5,'Pending','Bahadur');
-    with open('database/order_items.sql', 'w+') as f:
-        for order_id in range(2000, max):
+    max = 1000 + num
+    # INSERT INTO order_items VALUES ('1000','20003',5,'Pending','Bahadur');
+    with open('database_insert.sql', 'a+') as f:
+        for order_id in range(2000, max + 1):
             item_id = random.choice(range(30000, 30011))
             number = random.choice(range(5, 21))
             status = random.choice(['Ready', 'Pending'])
@@ -88,14 +107,9 @@ def make_data_order_items(num, cook_user_ids):
                 f"INSERT INTO order_items VALUES ('{order_id}','{item_id}',{number},'{status}','{user}');\n")
 
 
-def make_data_account_info():
-    #INSERT INTO account_info VALUES ('rksazid','sazidcse1234');
-    pass
-
-
 if __name__ == '__main__':
     emails = make_data_customer_info(1000)
-    make_data_order_info(1000, emails)
+    make_data_order_info(8000, emails)
     cook_user_ids = make_data_management(50)
     make_data_menu()
-    make_data_order_items(1000,cook_user_ids)
+    make_data_order_items(8000, cook_user_ids)
