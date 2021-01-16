@@ -633,15 +633,14 @@ def delete_employ(conn):
     else:
         print("Cancel!")
 
+
 def num_order(conn):
-    lst = query(conn,"select user_id, user_name, sum(quantity)\
-                        from order_items as ot\
-                        where status != 'Cancel'\
-                        group by (user_id)")
+    lst = query(conn, "select ot.user_id, user_name, sum(quantity)\
+                        from order_items as ot, management as m \
+                        where ot.status != 'Cancel' and m.user_id = ot.user_id group by (ot.user_id, m.user_name)")
     for items in lst:
         print(tabulate(items, headers=['User ID', 'Name', 'Sum']))
     r = input("Press ENTER to continue")
-
 
 
 def show_emp_management(conn):
@@ -670,16 +669,87 @@ def show_emp_management(conn):
             num_order(conn)
 
 
-def menu_funct(conn):
+def menu_funct():
     print("-----------MENU FUNCTION----------\n")
-    print("1. Add a disk in to menu")
-    print("2. Change a disk in menu")
+    print("1. Add a dish in to menu")
+    print("2. Change a dish in menu")
     print("3. Delete")
     print("4. Exit\n")
 
 
-def add_disk(conn):
-    lst = query(conn, "")
+def add_dish(conn):
+    lst = query(conn, "select item_id from menu")
+    print("Please enter the information")
+    item_id = input("Enter item_id: ")
+    count = 0
+    while count == 0:
+        for items in lst:
+            if item_id == items:
+                print("The item_id is already exit, please try another item_id")
+                item_id = input("Enter item_id: ")
+        if count == 0:
+            count += 1
+            continue
+    item_name = input("Enter Name of new food: ")
+    description = input("Enter type of new food: ")
+    price = float(input("Enter the price: "))
+    catagory = input("Enter catagory: ")
+    status = input("Enter status(Available/UnAvailable): ")
+    while status != 'Available' and status != 'UnAvailable':
+        print("Please enter again!")
+        status = input("Enter status(Available/UnAvailable): ")
+    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{catagory}','{status}','HasibIq')")
+
+
+def change_dish(conn):
+    lst = query(conn, "select item_id,item_name, description, price, catagory, status, user_id from menu")
+    item_id = input("Enter item_id: ")
+    count = 0
+    while count == 0:
+        for items in lst:
+            for item in items:
+                if item_id == item[0]:
+                    print("Fond!")
+                    #print(tabulate(item, headers=['ID', 'Name', 'Description', 'Price', 'Category', 'Status', 'User Id']))
+                    count += 1
+        if count == 0:
+            print("Can't find!. Please enter again")
+            item_id = input("Enter item_id: ")
+    head = ['item_name', 'description', 'price', 'catagory', 'status']
+    select = input("Enter the field you want to change: ")
+    while select not in head:
+        print("Unavailable field. Please enter again or try another field")
+        select = input("Enter the field you want to change: ")
+    if select in head:
+        values = input("Enter the values: ")
+        if select == 'status' and values != 'Available' and values != 'UnAvailable':
+            print("Values is not suitable. Only 'Available' or 'UnAvailable' is except!")
+            values = input("Enter the values: ")
+        insert(conn, f"update menu set {select} = '{values}' where item_id = '{item_id}'")
+
+
+def delete_dish(conn):
+    lst = query(conn, "select item_id from menu")
+    item_id = input("Enter item_id: ")
+    count = 0
+
+    while count == 0:
+        for items in lst:
+            for item in items:
+                if item_id == item[0]:
+                    print("Fond!")
+                    count += 1
+        if count == 0:
+            print("Can't find!. Please enter again")
+            item_id = input("Enter item_id: ")
+    choice = input("Are you sure you want to delete this employee(y/n)?: ")
+    while choice != 'y' and choice != 'n':
+        print("Please enter your choice again1")
+        choice = input("Are you sure you want to delete this employee(y/n)?: ")
+    if choice == 'y':
+        insert(conn, f"delete from menu where item_id = '{item_id}'")
+    else:
+        print("Cancel!")
 
 
 def login(conn):
@@ -769,7 +839,7 @@ def login(conn):
                     select_3_ = int(input("Enter your choice: "))
                     while select_3_ < 1 or select_3_ > 5:
                         print("Invalid selection!")
-                        select_3_ = input("Enter your choice: ")
+                        select_3_ = int(input("Enter your choice: "))
                     if select_3_ == 1:
                         show_cus_info(conn)
                     elif select_3_ == 2:
@@ -789,7 +859,18 @@ def login(conn):
                             elif luachon == 2:
                                 the_most_order_dish(conn)
                     elif select_3_ == 4:
-                        pass
+                        while select_4 != 4:
+                            menu_funct()
+                            select_4 = int(input("Enter your choice: "))
+                            while select_4 < 1 or select_4 > 5:
+                                print("Invalid selection!")
+                                select_4 = int(input("Enter your choice: "))
+                            if select_4 == 1:
+                                add_dish(conn)
+                            elif select_4 == 2:
+                                change_dish(conn)
+                            elif select_4 == 3:
+                                delete_dish(conn)
             elif select_3 == 2:
                 print("-----------Sales Management----------\n")
                 sale_by_day(conn)
@@ -806,15 +887,6 @@ def login(conn):
                         num_dish_sold(conn)
                     elif select_3_ == 3:
                         town_have_most_cus(conn)
-            elif select_3 == 4:
-                while select_4 != 4:
-                    menu_funct(conn)
-                    select_4 = input("Enter your choice: ")
-                    while select_4 < 1 or select_4 > 5:
-                        print("Invalid selection!")
-                        select_4 = input("Enter your choice: ")
-                    if select_4 == 1:
-                        add_disk(conn)
 
 
 def main():
