@@ -4,14 +4,14 @@ from tabulate import tabulate
 from datetime import date
 
 
-def connect_to_db_local(DB_NAME, DB_USER, DB_PASS, DB_HOST):
+def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
     return conn
 
 
-def connect_to_db(url):
-    conn = psycopg2.connect(url)
-    return conn
+# def connect_to_db(url):
+#     conn = psycopg2.connect(url)
+#     return conn
 
 
 def disconnect_to_db(conn):
@@ -635,11 +635,21 @@ def delete_employ(conn):
     else:
         print("Cancel!")
 
+
 def num_order(conn):
-    lst = query(conn,"select user_id, user_name, sum(quantity)\
-                        from order_items as ot\
-                        where status != 'Cancel'\
-                        group by (user_id)")
+    i = 0
+    while i == 0:
+        day_start = input("Choose day start: (YYYY-MM-DD) ")
+        i = is_day(day_start)
+    i = 0
+    while i == 0:
+        day_end = input("Choose day end: (YYYY-MM-DD) ")
+        i = is_day(day_end)
+    lst = query(conn, f"select ot.user_id, user_name, sum(quantity)\
+                        from order_items as ot, management as m, order_info as oi\
+                        where ot.status != 'Cancel' and m.user_id = ot.user_id\
+                            and ot.order_id = oi.order_id and torcv between '{day_start}' and '{day_end}'\
+                        group by (ot.user_id, user_name)")
     for items in lst:
         print(tabulate(items, headers=['User ID', 'Name', 'Sum']))
     r = input("Press ENTER to continue")
@@ -673,16 +683,16 @@ def show_emp_management(conn):
 
 def menu_funct():
     print("-----------MENU FUNCTION----------\n")
-    print("1. Add a disk in to menu")
-    print("2. Change a disk in menu")
+    print("1. Add a dish in to menu")
+    print("2. Change a dish in menu")
     print("3. Delete")
     print("4. Exit\n")
 
 
-def add_disk(conn):
+def add_dish(conn):
     lst = query(conn, "select item_id from menu")
     print("Please enter the information")
-    item_id = input("Enter item_id_id: ")
+    item_id = input("Enter item_id: ")
     count = 0
     while count == 0:
         for items in lst:
@@ -692,19 +702,32 @@ def add_disk(conn):
         if count == 0:
             count += 1
             continue
-    item_name = input("Enter Name of new food: ")
-    description = input("Enter type of new food: ")
+    item_name = input("Enter name of new food: ")
+    description = input("Enter description of new food: ")
     price = float(input("Enter the price: "))
     catagory = input("Enter catagory: ")
     status = input("Enter status(Available/UnAvailable): ")
     while status != 'Available' and status != 'UnAvailable':
         print("Please enter again!")
         status = input("Enter status(Available/UnAvailable): ")
-    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{catagory}','{status}','HasibIq')")
+    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{catagory}','{status}', 'datlt132')")
 
 
-def change_disk(conn):
+def change_dish(conn):
     head = ['']
+
+
+def delete_dish(conn):
+    lst = query(conn, "Select item_id from menu")
+    item_id = input("Enter item_id: ")
+    count = 0
+    while count == 0:
+        for items in lst:
+            if item_id == items:
+                print("Fond!")
+        if count == 0:
+            print("Can't find!. Please")
+            item_id = input("Enter item_id: ")
 
 
 def login(conn):
@@ -814,7 +837,18 @@ def login(conn):
                             elif luachon == 2:
                                 the_most_order_dish(conn)
                     elif select_3_ == 4:
-                        pass
+                        while select_4 != 4:
+                            menu_funct()
+                            select_4 = int(input("Enter your choice: "))
+                            while select_4 < 1 or select_4 > 5:
+                                print("Invalid selection!")
+                                select_4 = int(input("Enter your choice: "))
+                            if select_4 == 1:
+                                add_dish(conn)
+                            elif select_4 == 2:
+                                change_dish(conn)
+                            elif select_4 == 3:
+                                delete_dish(conn)
             elif select_3 == 2:
                 print("-----------Sales Management----------\n")
                 sale_by_day(conn)
@@ -831,31 +865,12 @@ def login(conn):
                         num_dish_sold(conn)
                     elif select_3_ == 3:
                         town_have_most_cus(conn)
-            elif select_3 == 4:
-                while select_4 != 4:
-                    menu_funct()
-                    select_4 = int(input("Enter your choice: "))
-                    while select_4 < 1 or select_4 > 5:
-                        print("Invalid selection!")
-                        select_4 = int(input("Enter your choice: "))
-                    if select_4 == 1:
-                        add_disk(conn)
-                    elif select_4 == 2:
-                        change_disk(conn)
 
 
 def main():
     # conn = connect_to_db("postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj")
-    conn = connect_to_db_local('fastfood_restaurant', 'postgres', 'admin', 'localhost')
+    conn = connect_to_db('fastfood_restaurant', 'postgres', 'admin', 'localhost')
     login(conn)
-    #show_cus_info(conn)
-    # search_by_field(conn)
-    # sale_by_day(conn)
-    # most_cancel_area(conn)
-    # num_dish_sold(conn)
-    # town_have_most_cus(conn)
-    # the_most_order_dish(conn)
-    # show_order_by_field(conn)
     disconnect_to_db(conn)
 
 
