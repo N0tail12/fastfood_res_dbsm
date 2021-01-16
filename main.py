@@ -670,11 +670,23 @@ def show_emp_management(conn):
             num_order(conn)
 
 
+def menu_funct(conn):
+    print("-----------MENU FUNCTION----------\n")
+    print("1. Add a disk in to menu")
+    print("2. Change a disk in menu")
+    print("3. Delete")
+    print("4. Exit\n")
+
+
+def add_disk(conn):
+    lst = query(conn, "")
+
+
 def login(conn):
     username = input("Enter your email or username: ")
     userpass = input("Enter your password: ")
     i = check_account(conn, username, userpass)
-    select_1 = select_2 = select_3 = luachon = select_3_ = 9,
+    select_1 = select_2 = select_3 = luachon = select_3_ = select_4 = 9,
     count = 0
     while i == 0 and count < 3:
         print("Please enter again!")
@@ -794,10 +806,20 @@ def login(conn):
                         num_dish_sold(conn)
                     elif select_3_ == 3:
                         town_have_most_cus(conn)
+            elif select_3 == 4:
+                while select_4 != 4:
+                    menu_funct(conn)
+                    select_4 = input("Enter your choice: ")
+                    while select_4 < 1 or select_4 > 5:
+                        print("Invalid selection!")
+                        select_4 = input("Enter your choice: ")
+                    if select_4 == 1:
+                        add_disk(conn)
 
 
 def main():
     conn = connect_to_db("postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj")
+    # conn = connect_to_db('res', 'postgres', 'admin', 'localhost')
     login(conn)
     #show_cus_info(conn)
     # search_by_field(conn)
