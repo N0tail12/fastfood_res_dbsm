@@ -1,3 +1,4 @@
+import datetime
 import psycopg2
 from tabulate import tabulate
 from datetime import date
@@ -88,15 +89,55 @@ def check_account(conn, username, userpass):
     return check
 
 
-def sale_by_day():
-    pass
+def is_day(string):
+    format = "%Y-%m-%d"
+    i = 1
+    try:
+        datetime.datetime.strptime(string, format)
+    except ValueError:
+        i = 0
+        print("This is the incorrect date string format. It should be YYYY-MM-DD")
+    return i
+
+
+def sale_by_day(conn):
+    i = 0
+    while i == 0:
+        day_start = input("Choose day start: (YYYY-MM-DD) ")
+        i = is_day(day_start)
+    i = 0
+    while i == 0:
+        day_end = input("Choose day end: (YYYY-MM-DD) ")
+        i = is_day(day_end)
+
+    sale = query(conn, f"select oi.todel, sum(me.price * ot.quantity) as total\
+                        from menu as me, order_items  as ot, order_info as oi\
+                        where me.item_id = ot.item_id and ot.order_id = oi.order_id\
+                            and todel between '{day_start}' and '{day_end}' and ot.status != 'Cancel'\
+                        group by(todel)\
+                        order by(total) desc")
+    for items in sale:
+        print(tabulate(items, headers=['Date', 'Sale']))
+    averge = query(conn, f"with bill_month as (\
+                            select oi.todel, sum(me.price * ot.quantity)as total\
+                            from menu as me, order_items  as ot, order_info as oi\
+                            where me.item_id = ot.item_id and ot.order_id = oi.order_id\
+                                and todel between '{day_start}' and '{day_end}' and ot.status != 'Cancel'\
+                            group by(todel)\
+                            )\
+                        select sum(total)/count(*) AS averge\
+                        from bill_month;")
+    for items in averge:
+        for item in items:
+            print("------------------")
+            print(f"Total: {item[0]}")
 
 
 def login(conn):
     username = input("Enter your email or username: ")
     userpass = input("Enter your password: ")
     i = check_account(conn, username, userpass)
-    select_1 = select_2 = select_3 = 5,
+    select_1 = select_2 = select_3 = 9,
     count = 0
     while i == 0 and count < 3:
         print("Please enter again!")
@@ -187,9 +228,11 @@ def login(conn):
                 while select_3_ < 1 or select_3_ > 5:
                     print("Invalid selection!")
                     select_3_ = input("Enter your choice: ")
+                if select_3_ == 1:
+                    search_by_field(conn)
             if select_3 == 2:
                 print("-----------Sales Management----------\n")
-                sale_by_day()
+                sale_by_day(conn)
             if select_3 == 3:
                 print("-----------Overview of sales areas----------\n")
                 print("1. Most cancel area")
@@ -202,12 +245,44 @@ def login(conn):
                     select_3_ = input("Enter your choice: ")
 
 
+def search_by_field(conn):
+    lst = query(conn, f"select email, fname, lname, pass, phone, area, town, status\
+                        from customer_info\
+                        order by email\
+                        limit 1;")
+    for items in lst:
+        print(tabulate(items, headers=['email', 'fname', 'lname', 'pass', 'phone', 'area', 'town', 'status']))
+    head = ['email', 'fname', 'lname', 'pass', 'phone', 'area', 'town', 'status']
+    select = ''
+    while select not in head:
+        select = input("Choose a field to search: ")
+        if select in head:
+            keyword = input("Input keyword: ")
+            _lst = query(conn, f"   select email, fname, lname, pass, phone, area, town, status\
+                                    from customer_info\
+                                    where {select} = '{keyword}'\
+                                    order by {select}")
+            for lst_item in _lst:
+                if not lst_item:
+                    print("No record macth your search!")
+                else:
+                    print("Your search: ")
+                    print(tabulate(lst_item, headers=['email', 'fname', 'lname', 'pass', 'phone', 'area', 'town', 'status']))
+                r = input("Do you want to search another? Enter EXIT to exit\n")
+                if r != 'EXIT':
+                    select = ''
+                    continue
+        else:
+            print("Your field is invalid!")
+            print("Choose another field to search: ")
+
+
 def check_order(conn):
     lst = query(conn, "select order_items.order_id, quantity, status, torcv, todel \
                        from order_info, order_items \
                        where status = 'Ready' and  order_items.order_id = order_info.order_id and todel = current_date")
     for items in lst:
-            print(tabulate(items, headers=['Order ID', 'Quantity', 'Status', 'Order Date', 'Delivery Day']))
+        print(tabulate(items, headers=['Order ID', 'Quantity', 'Status', 'Order Date', 'Delivery Day']))
     r = input("Press any key to continue!")
 
 
@@ -362,7 +437,141 @@ def export_bill(conn, username, first_order_id):
                                     and torcv <= '{date.today()}' and '{date.today()}' <= todel\
                                     and ot.item_id = m.item_id and ot.order_id > '{first_order_id}'\
                                     and ot.status != 'Cancel'")
-    all_amount = 0
+    all_amount = 0import psycopg2
+2
+from tabulate import tabulate
+3
+from datetime import date
+4
+​
+5
+​
+6
+def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
+7
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+8
+    return conn
+9
+​
+10
+​
+11
+def disconnect_to_db(conn):
+12
+    conn.close()
+13
+​
+14
+​
+15
+def query(conn, query_string):
+16
+    lst = []
+17
+    with conn.cursor() as cur:
+18
+        cur.execute(query_string)
+19
+        lst.append(cur.fetchall())
+20
+        conn.commit()
+21
+    return lst
+22
+​
+23
+​
+24
+def insert(conn, query_string):
+25
+    check = 1
+26
+    try:
+27
+        with conn.cursor() as cur:
+28
+            cur.execute(query_string)
+29
+            conn.commit()
+30
+            print("Successfully!")
+31
+            return check
+32
+    except (Exception, psycopg2.Error) as error:
+33
+        if conn:
+34
+            check = 0
+35
+            print("Failed to insert record", error)
+36
+            return check
+37
+​
+38
+​
+39
+def check_account(conn, username, userpass):
+40
+    customer_info = query(conn, "select email, pass, fname, status from customer_info")
+41
+    management_info = query(conn, "select user_id, pass, user_name,designation, status from management")
+42
+    check = 0
+43
+    name = ''
+44
+    designation = ''
+45
+    # check custtomer account
+46
+    for account in customer_info:
+47
+        for user in account:
+48
+            if username == user[0] and userpass == user[1]:
+49
+                if user[3] == 'Active':
+50
+                    check = 1
+51
+                    name = user[2]
+52
+                    break
+53
+                else:
+54
+                    check = -1
+55
+    # check employee and manager account
+56
+    for account in management_info:
+57
+        for empl in account:
+58
+            if username == empl[0] and userpass == empl[1]:
+59
+                if empl[4] != 'Blkd':
+60
+                    check = 2
+61
+                    name = empl[2]
+62
+                    designation = empl[3]
+63
+                    if empl[3] == 'Manager':
+64
+                        check = 3
+65
+                else:
+66
+                    check = -2
+67
+    # customer login successfull
+68
+    if check == 1:
     for items in lst:
         print(tabulate(items, headers=['Order_id', 'Email', 'Name', 'Quantity', 'Price', 'Status']))
         for item in items:
@@ -388,7 +597,9 @@ def check_present_order(conn, username):
 
 def main():
     conn = connect_to_db('res', 'postgres', 'admin', 'localhost')
-    login(conn)
+    # login(conn)
+    # search_by_field(conn)
+    sale_by_day(conn)
     disconnect_to_db(conn)
 
 
