@@ -62,7 +62,7 @@ def check_account(conn, username, userpass):
     for account in management_info:
         for empl in account:
             if username == empl[0] and userpass == empl[1]:
-                if empl[4] != 'Blkd':
+                if empl[4] != 'Blockd':
                     check = 2
                     name = empl[2]
                     designation = empl[3]
@@ -222,7 +222,7 @@ def show_old_order(conn, email):
 
 
 def order(conn, username):
-    menu = query(conn, "select item_id, item_name, description, price, catagory\
+    menu = query(conn, "select item_id, item_name, description, price, category\
                         from menu\
                         where status = 'Available'")
     item_ids = []
@@ -257,7 +257,7 @@ def order(conn, username):
         try:
             user_id = query(conn, "select user_id\
                         from management\
-                        where status != 'Blkd' and user_id in (\
+                        where status != 'Blockd' and user_id in (\
                             select user_id\
                             from order_items\
                             where status = 'Pending'\
@@ -484,7 +484,7 @@ def more_than_700(conn):
                         (select order_items.item_id,order_id, quantity*price as total\
                         from order_items,menu where order_items.item_id = menu.item_id) as a\
                         where a.order_id = order_info.order_id and\
-                         order_info.email = customer_info.email and a.total > '700'")
+                         order_info.email = customer_info.email and a.total > '700000'")
     for items in lst:
         print(tabulate(items, headers=['Name', 'Email', 'Town', 'Area', 'Phone', 'Total']))
     r = input("Press Enter to continue")
@@ -577,7 +577,7 @@ def add_emp(conn):
     while designation != 'Employee' and designation != "Cook" and designation != 'Manager' :
         print("Designation is not suitable, please Enter correctly")
         designation = input("Designation: ")
-    insert(conn, f"insert into management values ('{user_id}','{pass_word}','{user_name}','Actv','{designation}')")
+    insert(conn, f"insert into management values ('{user_id}','{pass_word}','{user_name}','Active','{designation}')")
     r = input("Press Enter to continue")
 
 
@@ -589,7 +589,7 @@ def change_info(conn):
         for items in lst:
             for item in items:
                 if user_id == item[0]:
-                    print("Fond!")
+                    print("Found!")
                     count += 1
         if count == 0:
             print("Can't find!")
@@ -602,10 +602,10 @@ def change_info(conn):
         print("Your field you just entered is wrong.Please try again")
         field_change = input("Enter the field that you want to change: ")
     if field_change == 'status':
-        values = input("Enter the value that you want to change(Actv/Blk): ")
-        while values != 'Actv' and values != 'Blk':
+        values = input("Enter the value that you want to change(Active/Block): ")
+        while values != 'Active' and values != 'Block':
             print("Incorrect value, please try again")
-            values = input("Enter the value that you want to change(Actv/Blk): ")
+            values = input("Enter the value that you want to change(Active/Block): ")
     else:
         values = input("Enter the value that you want to change(Employee/Cook/Manager): ")
         while values != 'Employee' and values != 'Cook' and values != 'Manager':
@@ -622,7 +622,7 @@ def delete_employ(conn):
         for items in lst:
             for item in items:
                 if user_id == item[0]:
-                    print("Fond!")
+                    print("Found!")
                     count += 1
         if count == 0:
             print("Can't find!")
@@ -698,25 +698,27 @@ def add_dish(conn):
     count = 0
     while count == 0:
         for items in lst:
-            if item_id == items:
-                print("The item_id is already exit, please try another item_id")
-                item_id = input("Enter item_id: ")
+            for item in items:
+                if item_id == item[0]:
+                    print("The item_id is already exit, please try another item_id")
+                    item_id = input("Enter item_id: ")
         if count == 0:
             count += 1
             continue
     item_name = input("Enter name of new food: ")
     description = input("Enter description of new food: ")
     price = float(input("Enter the price: "))
-    catagory = input("Enter catagory: ")
+    category = input("Enter category: ")
     status = input("Enter status(Available/UnAvailable): ")
     while status != 'Available' and status != 'UnAvailable':
         print("Please enter again!")
         status = input("Enter status(Available/UnAvailable): ")
-    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{catagory}','{status}', 'datlt132')")
-
-
+    insert(conn,
+           f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{category}','{status}', 'datlt132')")
+    
+    
 def change_dish(conn):
-    lst = query(conn, "select item_id,item_name, description, price, catagory, status, user_id from menu")
+    lst = query(conn, "select item_id,item_name, description, price, category, status, user_id from menu")
     item_id = input("Enter item_id: ")
     count = 0
     while count == 0:
@@ -728,7 +730,7 @@ def change_dish(conn):
         if count == 0:
             print("Can't find!. Please enter again")
             item_id = input("Enter item_id: ")
-    head = ['item_name', 'description', 'price', 'catagory', 'status']
+    head = ['item_name', 'description', 'price', 'category', 'status']
     select = input("Enter the field you want to change: ")
     while select not in head:
         print("Unavailable field. Please enter again or try another field")
@@ -749,7 +751,7 @@ def delete_dish(conn):
         for items in lst:
             for item in items:
                 if item_id == item[0]:
-                    print("Fond!")
+                    print("Found!")
                     count += 1
                     insert(conn, f"delete from menu where item_id = '{item_id}'")
         if count == 0:
