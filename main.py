@@ -747,10 +747,13 @@ def delete_dish(conn):
     count = 0
     while count == 0:
         for items in lst:
-            if item_id == items:
-                print("Fond!")
+            for item in items:
+                if item_id == item[0]:
+                    print("Fond!")
+                    count += 1
+                    insert(conn, f"delete from menu where item_id = '{item_id}'")
         if count == 0:
-            print("Can't find!. Please")
+            print("Can't find!. Please Enter again")
             item_id = input("Enter item_id: ")
 
 
