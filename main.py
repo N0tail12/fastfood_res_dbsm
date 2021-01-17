@@ -3,10 +3,12 @@ import psycopg2
 from tabulate import tabulate
 from datetime import date
 
-
+#
 # def connect_to_db(DB_NAME, DB_USER, DB_PASS, DB_HOST):
 #     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
 #     return conn
+
+
 def connect_to_db(url):
     conn = psycopg2.connect(url)
     return conn
@@ -220,7 +222,7 @@ def show_old_order(conn, email):
 
 
 def order(conn, username):
-    menu = query(conn, "select item_id, item_name, description, price, catagory\
+    menu = query(conn, "select item_id, item_name, description, price, category\
                         from menu\
                         where status = 'Available'")
     item_ids = []
@@ -481,7 +483,7 @@ def more_than_700(conn):
                         (select order_items.item_id,order_id, quantity*price as total\
                         from order_items,menu where order_items.item_id = menu.item_id) as a\
                         where a.order_id = order_info.order_id and\
-                         order_info.email = customer_info.email and a.total > '700'")
+                         order_info.email = customer_info.email and a.total > '700000'")
     for items in lst:
         print(tabulate(items, headers=['Name', 'Email', 'Town', 'Area', 'Phone', 'Total']))
     r = input("Press Enter to continue")
@@ -635,9 +637,19 @@ def delete_employ(conn):
 
 
 def num_order(conn):
-    lst = query(conn, "select ot.user_id, user_name, sum(quantity)\
-                        from order_items as ot, management as m \
-                        where ot.status != 'Cancel' and m.user_id = ot.user_id group by (ot.user_id, m.user_name)")
+    i = 0
+    while i == 0:
+        day_start = input("Choose day start: (YYYY-MM-DD) ")
+        i = is_day(day_start)
+    i = 0
+    while i == 0:
+        day_end = input("Choose day end: (YYYY-MM-DD) ")
+        i = is_day(day_end)
+    lst = query(conn, f"select ot.user_id, user_name, sum(quantity)\
+                        from order_items as ot, management as m, order_info as oi\
+                        where ot.status != 'Cancel' and m.user_id = ot.user_id\
+                            and ot.order_id = oi.order_id and torcv between '{day_start}' and '{day_end}'\
+                        group by (ot.user_id, user_name)")
     for items in lst:
         print(tabulate(items, headers=['User ID', 'Name', 'Sum']))
     r = input("Press ENTER to continue")
@@ -690,32 +702,31 @@ def add_dish(conn):
         if count == 0:
             count += 1
             continue
-    item_name = input("Enter Name of new food: ")
-    description = input("Enter type of new food: ")
+    item_name = input("Enter name of new food: ")
+    description = input("Enter description of new food: ")
     price = float(input("Enter the price: "))
-    catagory = input("Enter catagory: ")
+    category = input("Enter category: ")
     status = input("Enter status(Available/UnAvailable): ")
     while status != 'Available' and status != 'UnAvailable':
         print("Please enter again!")
         status = input("Enter status(Available/UnAvailable): ")
-    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{catagory}','{status}','HasibIq')")
+    insert(conn, f"insert into menu values('{item_id}','{item_name}','{description}','{price}','{category}','{status}', 'datlt132')")
 
 
 def change_dish(conn):
-    lst = query(conn, "select item_id,item_name, description, price, catagory, status, user_id from menu")
+    lst = query(conn, "select item_id,item_name, description, price, category, status, user_id from menu")
     item_id = input("Enter item_id: ")
     count = 0
     while count == 0:
         for items in lst:
             for item in items:
                 if item_id == item[0]:
-                    print("Fond!")
-                    #print(tabulate(item, headers=['ID', 'Name', 'Description', 'Price', 'Category', 'Status', 'User Id']))
+                    print("Found!")
                     count += 1
         if count == 0:
             print("Can't find!. Please enter again")
             item_id = input("Enter item_id: ")
-    head = ['item_name', 'description', 'price', 'catagory', 'status']
+    head = ['item_name', 'description', 'price', 'category', 'status']
     select = input("Enter the field you want to change: ")
     while select not in head:
         print("Unavailable field. Please enter again or try another field")
@@ -729,27 +740,20 @@ def change_dish(conn):
 
 
 def delete_dish(conn):
-    lst = query(conn, "select item_id from menu")
+    lst = query(conn, "Select item_id from menu")
     item_id = input("Enter item_id: ")
     count = 0
-
     while count == 0:
         for items in lst:
             for item in items:
                 if item_id == item[0]:
                     print("Fond!")
                     count += 1
+                    insert(conn, f"delete from menu where item_id = '{item_id}'")
         if count == 0:
-            print("Can't find!. Please enter again")
+            print("Can't find!. Please Enter again")
             item_id = input("Enter item_id: ")
-    choice = input("Are you sure you want to delete this employee(y/n)?: ")
-    while choice != 'y' and choice != 'n':
-        print("Please enter your choice again1")
-        choice = input("Are you sure you want to delete this employee(y/n)?: ")
-    if choice == 'y':
-        insert(conn, f"delete from menu where item_id = '{item_id}'")
-    else:
-        print("Cancel!")
+
 
 
 def login(conn):
@@ -890,17 +894,10 @@ def login(conn):
 
 
 def main():
-    conn = connect_to_db("postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj")
-    # conn = connect_to_db('res', 'postgres', 'admin', 'localhost')
+    conn = connect_to_db("postgres://kcgwalxt:LAZ-3_LWX4obqq4tZl-a8TtcAAtZUK9_@satao.db.elephantsql.com:5432/kcgwalxt")
+    #conn = connect_to_db('fastfood_restaurant', 'postgres', 'admin', 'localhost')
+    #delete_dish(conn)
     login(conn)
-    #show_cus_info(conn)
-    # search_by_field(conn)
-    # sale_by_day(conn)
-    # most_cancel_area(conn)
-    # num_dish_sold(conn)
-    # town_have_most_cus(conn)
-    # the_most_order_dish(conn)
-    # show_order_by_field(conn)
     disconnect_to_db(conn)
 
 
