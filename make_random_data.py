@@ -74,7 +74,6 @@ def make_data_management(num):
             if role == 'Cook': cook_user_ids.append(user_id)
             f.write(
                 f"INSERT INTO management VALUES ('{user_id}','{user_pass}','{name}','Active','{role}');\n")
-        f.write("INSERT INTO management VALUES ('lolicon1311','qwer1234','Nguyen Minh Hieu','Active','Manager');\n")
         f.write("INSERT INTO management VALUES ('datlt132','qwer1234','Luu Thanh Dat','Active','Manager');\n")
     return cook_user_ids
 
@@ -98,7 +97,7 @@ def make_data_order_items(num, cook_user_ids):
     max = 1000 + num
     # INSERT INTO order_items VALUES ('1000','20003',5,'Pending','Bahadur');
     with open('database_insert.sql', 'a+') as f:
-        for order_id in range(2000, max + 1):
+        for order_id in range(1000, max + 1):
             item_id = random.choice(range(30000, 30011))
             number = random.choice(range(5, 21))
             status = random.choice(['Ready', 'Pending'])
