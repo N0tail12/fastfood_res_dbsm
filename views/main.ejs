@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" href="/css/bootstrap.min.css">
+	<title>Login Page</title>
+</head>
+<body>
+	<style>
+		/*button, select, textarea {
+	    margin: 0;
+	    font-family: inherit;
+	    font-size: inherit;
+	    line-height: inherit;
+	    box-sizing: border-box;
+		}*/
+		.btn.btn-secondary,.btn.btn-primary{
+			width: 100px;
+			margin: 0 auto 5px auto;
+			/*height: 40px;
+			margin-left: 90px;*/
+		}
+		/*form{
+			border: solid 1px;
+			border-radius: 5px;
+			width: 300px;
+			height: 350px;
+			margin: 0 auto 50px auto;
+			background-color: #F6F8FA;
+		}*/
+		#Check1{
+			margin-top: 12px;
+		}
+		form{
+		background-color: #F6F8FA;
+		padding: 2.5rem;
+		width: 350px;
+		border: solid 3px;
+		border-radius: 5px;
+		margin: 0 auto 50px auto;
+	}
+		label{
+		display: inline-flex;
+		align-items: center;
+		font-size: 1.125rem;
+		line-height: 40px;
+	}
+		/*#pwd,#login_field{
+			box-sizing: border-box;
+			height: 30px;
+			width: 260px;
+			margin: 0 auto;
+		}*/
+		.title{
+			font-size: 30px;
+			font-weight: 300;
+			margin: auto;
+			width: 360px;
+			color: green;
+			text-align: center;
+			text-shadow: 2px 2px 5px green;
+		}
+		.interact{
+			display: flex;
+			flex-direction: column;
+		}
+		body{
+			background-color: #282C34;
+		}
+		
+	</style>
+	<header style="padding-bottom: 50px">
+	<div class="title_taskbar" style="width: 100%; height: 80px;color: black;position: center;margin: auto; font-size: 33px">
+		<a href="main.ejs">
+		<div class="text-center">
+  		<img src="JOEY2.png" class="rounded" alt="JR">
+		</div>
+		</a>
+	</div>
+	</header>
+	<div class="title"><p>Welcome to Joey's Restaunrant</p></div>
+	<div class="form">
+	<form>
+  <div class="form-group">
+    <label for="InputEmail1">Username or Email adress:</label>
+    <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required autofocus>
+  </div>
+  <div class="form-group">
+    <label for="InputPassword1">Password:</label>
+    <input type="password" class="form-control" id="InputPassword1" placeholder="Password" required>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="Check1">
+    <label class="form-check-label" for="Check1">Remember Me</label>
+  </div>
+  <div class="interact">
+  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-secondary">Sig Up</button>
+</div>
+</form>
+	</div>
+
+</body>
+</html>
