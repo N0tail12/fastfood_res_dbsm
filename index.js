@@ -22,7 +22,7 @@ app.get('/', function(req, res){
 });
 
 
-app.post('/info', async (req, res) =>{
+app.post('/login', async (req, res) =>{
   var user = req.body.txtemail;
   var pass = req.body.pass;
   // console.log(user);
@@ -30,10 +30,18 @@ app.post('/info', async (req, res) =>{
   try{
     let rs = await pool.query("Select * from customer_info where email = '"+user+"' and pass = '"+pass+"' and status = 'Active'");
     if(rs.rowCount > 0){
-      res.render('customer');
+       console.log(user);
+       console.log(pass);
+       res.render('login');
     }
     else{
-      rs = await pool.query("Select * from customer_info where email = '"+user+"' and pass = '"+pass+"'");
+      rs = await pool.query("Select * from management where user_id = '"+user+"' and pass = '"+pass+"' and status = 'Actv'");
+       if(rs.rows[0].designation == 'Manager'){
+         res.render('login');
+       }
+       else if(rs.rows[0].designation == 'Employee' || rs.rows[0].designation == 'Cook'){
+        res.render('customer')
+       }
     }
   }catch(err){
 
