@@ -1,81 +1,14 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/style.css">
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<title>Login Page</title>
 </head>
 
-<body>
-	<style>
-		/*button, select, textarea {
-	    margin: 0;
-	    font-family: inherit;
-	    font-size: inherit;
-	    line-height: inherit;
-	    box-sizing: border-box;
-		}*/
-		.btn.btn-secondary,
-		.btn.btn-primary {
-			width: 100px;
-			margin: 0 auto 5px auto;
-			/*height: 40px;
-			margin-left: 90px;*/
-		}
-
-		/*form{
-			border: solid 1px;
-			border-radius: 5px;
-			width: 300px;
-			height: 350px;
-			margin: 0 auto 50px auto;
-			background-color: #F6F8FA;
-		}*/
-		#Check1 {
-			margin-top: 12px;
-		}
-
-		form {
-			background-color: #F6F8FA;
-			padding: 2.5rem;
-			width: 350px;
-			border: solid 3px;
-			border-radius: 5px;
-			margin: 0 auto 50px auto;
-		}
-
-		label {
-			display: inline-flex;
-			align-items: center;
-			font-size: 1.125rem;
-			line-height: 40px;
-		}
-
-		/*#pwd,#login_field{
-			box-sizing: border-box;
-			height: 30px;
-			width: 260px;
-			margin: 0 auto;
-		}*/
-		.title {
-			font-size: 30px;
-			font-weight: 300;
-			margin: auto;
-			width: 360px;
-			color: green;
-			text-align: center;
-			text-shadow: 2px 2px 5px green;
-		}
-
-		.interact {
-			display: flex;
-			flex-direction: column;
-		}
-
-		body {
-			background-color: #282C34;
-		}
-	</style>
+<body class="main">
 	<header style="padding-bottom: 50px">
 		<div class="title_taskbar"
 			style="width: 100%; height: 80px;color: black;position: center;margin: auto; font-size: 33px">
@@ -90,11 +23,11 @@
 		<p>Welcome to Joey's Restaunrant</p>
 	</div>
 	<div class="form">
-		<form method="POST" action="/login">
+		<form method="POST" action="/login" id="father">
 			<div class="form-group">
 				<label for="InputEmail1">Username or Email adress:</label>
-				<input type="text" name="txtemail" class="form-control" id="InputEmail1" aria-describedby="emailHelp"
-					placeholder="Enter email" required autofocus>
+				<input type="text" name="txtemail" class="form-control" id="InputEmail1" placeholder="Enter email"
+					required autofocus>
 			</div>
 			<div class="form-group">
 				<label for="InputPassword1">Password:</label>
@@ -107,10 +40,56 @@
 			</div>
 			<div class="interact">
 				<button type="submit" class="btn btn-primary">Login</button>
-				<button type="submit" class="btn btn-secondary">Sig Up</button>
+				<button type="button" class="btn btn-secondary"
+					onclick="document.getElementById('id01').style.display='block'">Sign Up</button>
 			</div>
 		</form>
+		<div id="id01" class="modal">
+			<span onclick="document.getElementById('id01').style.display='none'" class="close"
+				title="Close Modal">&times;</span>
+			<form class="signform" method="POST" action="\">
+				<div class="form-inside">
+					<h1 style="text-align: center">Create Your Account</h1>
+					<label for="fname">Fisrt Name:</label>
+					<input type="text" name="signfname" class="form-control" id="fname" placeholder="Fisrt Name"
+						required autofocus>
+					<label for="lname">Last Name</label>
+					<input type="text" name="signlname" class="form-control" id="lname" placeholder="Last Name"
+						required>
+					<label for="signemail">Email adress:</label>
+					<input type="email" name="signemail" class="form-control" id="signemail" placeholder="Enter Email"
+						required>
+					<label for="email">Password:</label>
+					<input type="password" name="signpass" class="form-control" id="email" required>
+					<label for="pnumber">Phone Number:</label>
+					<input type="number" name="signpnumber" class="form-control" id="pnumber"
+						placeholder="Enter Phone Number" required>
+					<label for="area">Area:</label>
+					<input type="text" name="signarea" class="form-control" id="area" placeholder="Enter Area" required>
+					<label for="town">Town:</label>
+					<input type="text" name="signtown" class="form-control" id="town" placeholder="Enter Town" required>
+					<div class="clearfix">
+						<button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Sign Up</button>
+						<button type="button" onclick="document.getElementById('id01').style.display='none'"
+							class="btn btn-danger" style="width: 100%;">Cancel</button>
+
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
+	<script>
+		// Get the modal
+		var modal = document.getElementById('id01');
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	</script>
+
 
 </body>
 

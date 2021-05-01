@@ -1,0 +1,100 @@
+
+		.btn.btn-secondary,
+		.btn.btn-primary {
+			width: 100px;
+			margin: 0 auto 5px auto;
+			/*height: 40px;
+			margin-left: 90px;*/
+		}
+        button:hover {
+            opacity:1;
+          }
+		
+		#Check1 {
+			margin-top: 12px;
+		}
+
+		#father {
+			background-color: #F6F8FA;
+			padding: 2.5rem;
+			width: 350px;
+			border: solid 3px;
+			border-radius: 5px;
+			margin: 0 auto 50px auto;
+		}
+
+		label {
+			display: inline-flex;
+			align-items: center;
+			font-size: 1.125rem;
+			line-height: 40px;
+		}
+
+        .modal{
+            background-color: transparent;
+        }
+		.title {
+			font-size: 30px;
+			font-weight: 300;
+			margin: auto;
+			width: 360px;
+			color: green;
+			text-align: center;
+			text-shadow: 2px 2px 5px green;
+		}
+
+		.interact {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.main {
+			background-color: #282C34;
+		}
+		
+
+        .signform{
+            padding: 4.5rem;
+            width: 620px;
+            margin: 4.5rem auto 50px auto;
+            background-color: #f1f1f1;
+        }
+        .cancelbtn {
+        padding: 14px 20px;
+        background-color: #f44336;
+        }
+
+        /* Float cancel and signup buttons and add an equal width */
+        .cancelbtn, .signupbtn {
+        float: left;
+        width: 50%;
+        }
+
+        
+        /* The Close Button (x) */
+        .close {
+        position: absolute;
+        right: 35px;
+        top: 15px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #f1f1f1;
+        }
+
+        .close:hover,
+        .close:focus {
+        color: #f44336;
+        cursor: pointer;
+        }
+
+        .clearfix{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Clear floats */
+        .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+        }
