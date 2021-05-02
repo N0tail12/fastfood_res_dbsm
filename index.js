@@ -1,6 +1,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var session = require("express-session");
+var flash = require('connect-flash');
 var app = express();
+var cookieParser = require('cookie-parser');
 app.use(express.static("public"));
 app.use('/css', express.static(__dirname + '/lib/bootstrap/css'));
 app.use('/JOEY2.png', express.static(__dirname + '/views/JOEY2.png'))
@@ -10,6 +13,14 @@ app.set("views", "./views");
 app.listen(3000);
 
 app.use(express.urlencoded({extended: false}));
+app.use(flash());
+app.use(cookieParser('secretString'));
+app.use(session({cookie: { maxAge: 60000 }}));
+app.use((req , res, next) =>{
+  res.locals.message = req.session.message
+  delete req.session.message
+  next()
+})
 
 const {Pool} = require('pg')
 const connectionString = 'postgres://gecksmtj:8xTHFHDY7Nqu80PT8yv_0OLZi7sA1Uz9@suleiman.db.elephantsql.com:5432/gecksmtj'
@@ -32,10 +43,14 @@ app.post('/', async (req,res)=>{
   let town = req.body.signtown;
   try{
     let rs = await pool.query("INSERT INTO customer_info VALUES ('"+email+"','"+fname+"','"+lnane+"','"+pass+"','"+pnumber+"','"+area+"','"+town+"','Active');")
-    console.log("Added");
-    res.render("main");
+    req.flash('message','Signup Success')
+    req.flash('type', 'success')
+    res.render('customer',{message: req.flash('message'), type: req.flash('type')});
+    console.log("oke");
   }catch(err){
-    console.log("Smthing went wrong!");
+    req.flash('message','This Email is already taken, please try again')
+    req.flash('type', 'danger')
+    res.render('main',{message: req.flash('message'), type: req.flash('type')});
   }
 });
 
@@ -46,20 +61,31 @@ app.post('/login', async (req, res) =>{
   // console.log(pass);
   try{
     let rs = await pool.query("Select * from customer_info where email = '"+user+"' and pass = '"+pass+"' and status = 'Active'");
+    
     if(rs.rowCount > 0){
-       res.render('customer');
+      req.flash('message','Login Success')
+      req.flash('type', 'success')
+      res.render('customer',{message: req.flash('message'), type: req.flash('type')});
+      
+      //res.render('customer',message);
     }
     else{
       rs = await pool.query("Select * from management where user_id = '"+user+"' and pass = '"+pass+"' and status = 'Actv'");
        if(rs.rows[0].designation == 'Manager'){
-         res.render('manager');
+        req.flash('message','Login Success')
+      req.flash('type', 'success')
+      res.render('customer',{message: req.flash('message'), type: req.flash('type')});
        }
        else if(rs.rows[0].designation == 'Employee' || rs.rows[0].designation == 'Cook'){
-        res.render('employee')
+        req.flash('message','Login Success')
+      req.flash('type', 'success')
+      res.render('customer',{message: req.flash('message'), type: req.flash('type')});
        }
     }
   }catch(err){
-    console.log("Smthing went wrong!");
+    req.flash('message','Login Failed. Try again!')
+      req.flash('type', 'danger')
+      res.render('main',{message: req.flash('message'), type: req.flash('type')});
   }
 });
 
