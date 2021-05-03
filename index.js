@@ -6,8 +6,12 @@ var app = express();
 var cookieParser = require('cookie-parser');
 app.use(express.static("public"));
 app.use('/css', express.static(__dirname + '/lib/bootstrap/css'));
-app.use('/JOEY2.png', express.static(__dirname + '/views/JOEY2.png'))
+app.use('/JOEY2.png', express.static(__dirname + '/views/JOEY2.png'));
+app.use('/hamburger.jpg', express.static(__dirname + '/views/hamburger.jpg'));
+app.use('/pizza.jpg', express.static(__dirname + '/views/pizza.jpg'));
+app.use('/background.jpg', express.static(__dirname + '/views/background.jpg'));
 app.use('/style.css', express.static(__dirname + '/public/style.css'));
+app.use('/views', express.static(__dirname + '/views'));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.listen(3000);
@@ -54,7 +58,7 @@ app.post('/', async (req,res)=>{
   }
 });
 
-app.post('/login', async (req, res) =>{
+app.post('/home', async (req, res) =>{
   var user = req.body.txtemail;
   var pass = req.body.pass;
   // console.log(user);
