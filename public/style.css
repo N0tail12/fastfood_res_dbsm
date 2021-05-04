@@ -98,3 +98,60 @@
         clear: both;
         display: table;
         }
+        .nav-link{
+            font-size: 30px;
+            font-weight: 700;
+            color: white;
+        }
+        #welcome-section{
+            background-image: url(/background.jpg);
+            height: 95vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+        }
+        .top-title {
+            font-family: 'Playball', cursive;
+            font-size: 120px;
+            font-weight: 400;
+        }
+        #welcome-section p{
+            font-size: 2rem;
+            font-style: italic;
+        }
+        hr{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+        .aboutus {
+            margin: 0 auto 50px auto;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 900;
+            width: 280px;
+            letter-spacing: 0.040em;
+            border: 1px solid #2f2e2f;
+        }
+        .navbar a:hover{
+            border-bottom: 3px solid white;
+        }
+        #menu{
+            background-image: url(views/menu-background.jpg);
+            height: 95vh;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu-title{
+            font-family: 'Playball', cursive;
+            font-size: 120px;
+            font-weight: 400;
+            color: white;
+            border-bottom: 3px solid white;
+        }
