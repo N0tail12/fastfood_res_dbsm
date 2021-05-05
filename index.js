@@ -52,8 +52,8 @@ app.post('/', async (req,res)=>{
     let rs = await pool.query("INSERT INTO customer_info VALUES ('"+email+"','"+fname+"','"+lnane+"','"+pass+"','"+pnumber+"','"+area+"','"+town+"','Active');")
     req.flash('message','Signup Success')
     req.flash('type', 'success')
-    res.render('customer',{message: req.flash('message'), type: req.flash('type')});
-    console.log("oke");
+    res.render('main',{message: req.flash('message'), type: req.flash('type')});
+    // console.log("oke");
   }catch(err){
     req.flash('message','This Email is already taken, please try again')
     req.flash('type', 'danger')
@@ -80,13 +80,13 @@ app.post('/home', async (req, res) =>{
       rs = await pool.query("Select * from management where user_id = '"+user+"' and pass = '"+pass+"' and status = 'Actv'");
        if(rs.rows[0].designation == 'Manager'){
         req.flash('message','Login Success')
-      req.flash('type', 'success')
-      res.render('customer',{message: req.flash('message'), type: req.flash('type')});
+        req.flash('type', 'success')
+        res.render('manager',{message: req.flash('message'), type: req.flash('type')});
        }
        else if(rs.rows[0].designation == 'Employee' || rs.rows[0].designation == 'Cook'){
         req.flash('message','Login Success')
       req.flash('type', 'success')
-      res.render('customer',{message: req.flash('message'), type: req.flash('type')});
+      res.render('employee',{message: req.flash('message'), type: req.flash('type')});
        }
     }
   }catch(err){
