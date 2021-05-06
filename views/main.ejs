@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<% var message %>
-<% var type %>
+<% var message = {type: '', message: ''} %>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/style.css">
@@ -12,8 +11,8 @@
 
 <body class="main">
 	<% if(message){ %>
-		<div class="alert alert-<%=type%> alert-dismissible fade show" role="alert" style="text-align: center;">
-			<strong><%= message%></strong>
+		<div class="alert alert-<%=message.type%> alert-dismissible fade show" role="alert" style="text-align: center;">
+			<strong><%= message.message%></strong>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		  </div>
 	<%}%>
