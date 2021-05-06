@@ -1,4 +1,4 @@
-
+/* Login site style*/
 		.btn.btn-secondary,
 		.btn.btn-primary {
 			width: 100px;
@@ -98,6 +98,7 @@
         clear: both;
         display: table;
         }
+/*Customer Style*/
         .nav-link{
             font-size: 30px;
             font-weight: 700;
@@ -161,7 +162,12 @@
         }
         .column.food ,.column.drink{
             margin-top: 50px;
-            width: 33.00%;
+            text-align: center;
+            width: 30%;
+            margin-left: 5px;
+            min-width: 200px;
+            margin-right: 5px;
+            position: relative;
         }
         .row{
             background-color: white;
@@ -169,10 +175,42 @@
         .column.food img, .column.drink img{
             display: block;
             margin: 0 auto 0 auto;
+            width: 200px;
+            height: 200px;
+        }
+        .column.food h4, .column.drink h4{
+            min-width: 200px;
+            text-align: center;
         }
         .show{
-            display: block;
+            /* display: block; */
         }
         .hidden{
             display: none;
         }
+/* Manager style*/
+        .sidenav{
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+          }
+          .sidenav a:hover {
+            color: #f1f1f1;
+          }
+          @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+          }
