@@ -52,15 +52,15 @@
                                 </ul>
                               </div>
                         <table class="table table-striped">
-                            <thead>
+                            <thead>     
                                 <tr>
                                     <th scope="col">STT</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Fisrt Name</th>
-                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Name</th>
                                     <th scope="col">Phone Number</th>
                                     <th scope="col">Area</th>
                                     <th scope="col">Town</th>
+                                    <th scope="col">Number of Order</th>
                                 </tr>
                             </thead>
                             <tbody id="print">
@@ -73,10 +73,7 @@
                                             <%=cus.email%>
                                         </th>
                                         <td>
-                                            <%=cus.fname%>
-                                        </td>
-                                        <td>
-                                            <%=cus.lname%>
+                                            <%=cus.name%>
                                         </td>
                                         <td>
                                             <%=cus.phone%>
@@ -86,6 +83,9 @@
                                         </td>
                                         <td>
                                             <%=cus.town%>
+                                        </td>
+                                        <td>
+                                            <%=cus.count%>
                                         </td>
                                     </tr>
                                     <% number +=1%>
@@ -97,7 +97,7 @@
                             <ul class="pagination">
                                 <% if (page> 1){%>
                                     <li class="page-item"><a class="page-link"
-                                            href="/manager/customerinfo?page=<%=parseInt(page)-1%>">Previous</a></li>
+                                            href="/manager/customerinfo/familiar?page=<%=parseInt(page)-1%>">Previous</a></li>
                                     <% } %>
                                         <% if (page==1) {%>
                                             <li class="page-item"><a class="page-link">Previous</a></li>
@@ -105,19 +105,19 @@
                                                 <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
                                                     <%if(i==page){%>
                                                         <li class="page-item active"><a class="page-link"
-                                                                href="/manager/customerinfo?page=<%=parseInt(i)%>">
+                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
                                                                 <%=i%>
                                                             </a></li>
                                                         <%} else{%>
                                                             <li class="page-item"><a class="page-link"
-                                                                    href="/manager/customerinfo?page=<%=parseInt(i)%>">
+                                                                    href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
                                                                     <%=i%>
                                                                 </a></li>
                                                             <%}%>
                                                                 <%}%>
                                                                     <% if (page <=(numberpage)){%>
                                                                         <li class="page-item"><a class="page-link"
-                                                                                href="/manager/customerinfo?page=<%=parseInt(page) +1%>">Next</a>
+                                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(page) +1%>">Next</a>
                                                                         </li>
                                                                         <% } %>
                                                                             <% if (page> (numberpage)){%>

@@ -226,4 +226,5 @@
               margin: 50px auto 50px auto;
               background-color: white;
               padding: 10px 20px 20px 20px;
+              min-height: 100vh;
           }

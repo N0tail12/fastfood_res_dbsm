@@ -31,40 +31,11 @@ const connectionString = 'postgres://ijgbgbrz:UXX0MoGyaIw8cXPmUdHI5aWas3HHP5Oy@q
 const pool = new Pool({
   connectionString,
 })
-app.get('/manager',(req,res)=>{
-  res.render('manager')
-})
-
-app.get('/manager/customerinfo', async (req, res) => {
-  let rs = await pool.query("Select * from customer_info");
-  let page = req.query.page;
-  let limit = 60
-  if(page < 1)
-  page = 1;
-  if(page > (rs.rowCount/limit))
-  page = Math.ceil(rs.rowCount/limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = page*limit;
-  const info = rs.rows.slice(startIndex, endIndex);
-  // console.log(rs.rows)
-  // let rs = await pool.query('select * from menu');
-  // items = res.json(rs.rows);  
-  res.render('customerinfo', {info: info, page: page, numberpage: rs.rowCount/limit})
-});
-app.get('/customer', (req,res)=>{
-
-  res.render('customer')
-})
-// app.get('/manager',async (req,res)=>{
-//   let rs = await pool.query('select * from menu')
-//   items = res.json(rs.rows)
-// })
-
-
+//Main 
 app.get('/', function (req, res) {
   res.render("main");
 });
-
+//Sign In
 app.post('/', async (req, res) => {
   let fname = req.body.signfname;
   let lnane = req.body.signlname;
@@ -78,28 +49,24 @@ app.post('/', async (req, res) => {
     req.flash('message', 'Signup Success')
     req.flash('type', 'success')
     res.render('main', { message: req.flash('message'), type: req.flash('type') });
-    // console.log("oke");
+   
   } catch (err) {
     req.flash('message', 'This Email is already taken, please try again')
     req.flash('type', 'danger')
     res.render('main', { message: req.flash('message'), type: req.flash('type') });
   }
 });
-
-
-
+//login
 app.post('/home', async (req, res) => {
   var user = req.body.txtemail;
   var pass = req.body.pass;
-  // console.log(user);
-  // console.log(pass);
+  
   try {
     let rs = await pool.query("Select * from customer_info where email = '" + user + "' and pass = '" + pass + "' and status = 'Active'")
     if (rs.rowCount > 0) {
       res.cookie('user', 'cookie')
       res.redirect('/customer?user=' + user + '&page=1')
-      // items = res.json(rs.rows)
-      //res.render('customer',message);
+     
     }
     else {
       rs = await pool.query("Select * from management where user_id = '" + user + "' and pass = '" + pass + "' and status = 'Actv'");
@@ -120,10 +87,67 @@ app.post('/home', async (req, res) => {
 });
 
 
-// app.get('/login', function(req, res){
-//     res.render("login.ejs");
-// })
+// Manager Funtions
+app.get('/manager',(req,res)=>{
+  res.render('manager')
+})
+//Customer Infomation Funtion
+app.get('/manager/customerinfo', async (req, res) => {
+  let rs = await pool.query("Select * from customer_info");
+  let page = req.query.page;
+  let limit = 20
+  if(page < 1)
+  page = 1;
+  if(page > (rs.rowCount/limit))
+  page = Math.ceil(rs.rowCount/limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page*limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  
+  res.render('customerinfo', {info: info, page: page, numberpage: rs.rowCount/limit})
+});
+
+app.get('/manager/customerinfo/top10', async (req, res) => {
+  let rs = await pool.query("select cus.email ,cus.fname||' '||cus.lname as name, cus.phone, cus.town, cus.area, sum(quantity) as total_num\
+  from order_info as oi, order_items as ot, customer_info as cus\
+  where oi.order_id = ot.order_id and ot.status != 'Cancel'  and cus.email = oi.email\
+  group by(cus.email)\
+  order by(total_num) desc\
+  limit 10");
+  let page = req.query.page;
+  let limit = 20
+  if(page < 1)
+  page = 1;
+  if(page > (rs.rowCount/limit))
+  page = Math.ceil(rs.rowCount/limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page*limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  
+  res.render('top10', {info: info, page: page, numberpage: rs.rowCount/limit})
+});
+
+app.get('/manager/customerinfo/familiar', async (req, res) => {
+  let rs = await pool.query("select cus.email,cus.fname||' '||cus.lname as name, cus.phone, cus.area, cus.town, count(o.email) from order_info o, customer_info cus where o.email = cus.email group by o.email,cus.email having count(o.email)>3 and max('TORCV') > '2020-12-31'");
+  let page = req.query.page;
+  let limit = 20
+  if(page < 1)
+  page = 1;
+  if(page > (rs.rowCount/limit))
+  page = Math.ceil(rs.rowCount/limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page*limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  
+  res.render('familiar', {info: info, page: page, numberpage: rs.rowCount/limit})
+});
+// Employee Funtion
 
 
+// Menu Funtion
+app.get('/customer', (req,res)=>{
 
-module.exports = items;
+  res.render('customer')
+})
+
+
