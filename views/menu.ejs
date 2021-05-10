@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <%var info%>
-    <%var number=1%>
         <%var page%>
             <%var numberpage%>
 
@@ -10,6 +9,7 @@
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <link rel="stylesheet" href="../../css/style.css">
+                    <script src="https://kit.fontawesome.com/f87c891e2c.js" crossorigin="anonymous"></script>
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
                         rel="stylesheet"
                         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
@@ -38,57 +38,48 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="info-content" >
-                            <h1 style="width: 400px; margin: 0 auto 10px auto; text-align: center;">Customer Infomation</h1>
-                            <div class="dropdown" style="float: right;">
-                                <a class="btn btn-secondary dropdown-toggle" style="width: auto;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                 Option
-                                </a>
-                              
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                  <li><a class="dropdown-item" href="/manager/customerinfo?page=1" >All Customer</a></li>
-                                  <li><a class="dropdown-item" href="/manager/customerinfo/top10?page=1">Top 10 with the most order</a></li>
-                                  <li><a class="dropdown-item" href="/manager/customerinfo/familiar?page=1">Familiar Customer</a></li>
-                                </ul>
-                              </div>
-                        <table class="table table-striped">
-                            <thead>     
-                                <tr>
-                                    <th scope="col">STT</th>
-                                    <th scope="col">Email</th>
+                        <div class="info-content">
+                            <h1 style="width: 400px; margin: 0 auto 10px auto; text-align: center;">Customer Infomation
+                            </h1>
+                            <button type="button" class="btn btn-primary" style="float: right;"><i class="fas fa-plus" style="margin-right: 10px;"></i>Add</button>
+                            <table class="table table-striped">
+                            <thead> 
+                            <tr>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Area</th>
-                                    <th scope="col">Town</th>
-                                    <th scope="col">Number of Order</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Option</th>
                                 </tr>
                             </thead>
                             <tbody id="print">
-                                <%info.forEach(function(cus){%>
+                                <%info.forEach(function(menu){%>
                                     <tr>
-                                        <th>
-                                            <%=number%>
-                                        </th>
                                         <th scope="row">
-                                            <%=cus.email%>
+                                            <%=menu.item_id%>
                                         </th>
                                         <td>
-                                            <%=cus.name%>
+                                            <%=menu.item_name%>
                                         </td>
                                         <td>
-                                            <%=cus.phone%>
+                                            <img src="../../<%=menu.description%>" class="rounded" alt="JR" style="height: 50px;width: 50px;">
                                         </td>
                                         <td>
-                                            <%=cus.area%>
+                                            <%=menu.price%>
                                         </td>
                                         <td>
-                                            <%=cus.town%>
+                                            <%=menu.catagory%>
                                         </td>
                                         <td>
-                                            <%=cus.count%>
+                                            <%=menu.status%>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success">Change</button>
+                                            <button type="button" class="btn btn-danger">Delete</button>
                                         </td>
                                     </tr>
-                                    <% number +=1%>
                                         <% }); %>
                             </tbody>
                         </table>
@@ -97,7 +88,7 @@
                             <ul class="pagination">
                                 <% if (page> 1){%>
                                     <li class="page-item"><a class="page-link"
-                                            href="/manager/customerinfo/familiar?page=<%=parseInt(page)-1%>">Previous</a></li>
+                                            href="/manager/employeeinfo?page=<%=parseInt(page)-1%>">Previous</a></li>
                                     <% } %>
                                         <% if (page==1) {%>
                                             <li class="page-item"><a class="page-link">Previous</a></li>
@@ -105,19 +96,19 @@
                                                 <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
                                                     <%if(i==page){%>
                                                         <li class="page-item active"><a class="page-link"
-                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
+                                                                href="/manager/employeeinfo?page=<%=parseInt(i)%>">
                                                                 <%=i%>
                                                             </a></li>
                                                         <%} else{%>
                                                             <li class="page-item"><a class="page-link"
-                                                                    href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
+                                                                    href="/manager/employeeinfo?page=<%=parseInt(i)%>">
                                                                     <%=i%>
                                                                 </a></li>
                                                             <%}%>
                                                                 <%}%>
                                                                     <% if (page <=(numberpage)){%>
                                                                         <li class="page-item"><a class="page-link"
-                                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(page) +1%>">Next</a>
+                                                                                href="/manager/employeeinfo?page=<%=parseInt(page) +1%>">Next</a>
                                                                         </li>
                                                                         <% } %>
                                                                             <% if (page> (numberpage)){%>
@@ -126,7 +117,7 @@
                                                                                 <% } %>
                             </ul>
                         </nav>
-                    </div>
+                        </div>
 
                 </body>
 

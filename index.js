@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var flash = require('connect-flash');
 var app = express();
+var alert = require('alert')
 var cookieParser = require('cookie-parser');
 var items
 app.use(express.static("public"));
@@ -24,7 +25,10 @@ app.listen(3000);
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 app.use(cookieParser('secretString'));
-app.use(session({ cookie: { maxAge: 60 } }));
+app.use(session({
+  cookie: { maxAge: 60000 }  
+}));
+
 
 const { Pool } = require('pg');
 const connectionString = 'postgres://ijgbgbrz:UXX0MoGyaIw8cXPmUdHI5aWas3HHP5Oy@queenie.db.elephantsql.com:5432/ijgbgbrz'
@@ -87,11 +91,11 @@ app.post('/home', async (req, res) => {
 });
 
 
-// Manager Funtions
+// Manager Functions
 app.get('/manager',(req,res)=>{
   res.render('manager')
 })
-//Customer Infomation Funtion
+//Customer Information Function
 app.get('/manager/customerinfo', async (req, res) => {
   let rs = await pool.query("Select * from customer_info");
   let page = req.query.page;
@@ -141,10 +145,69 @@ app.get('/manager/customerinfo/familiar', async (req, res) => {
   
   res.render('familiar', {info: info, page: page, numberpage: rs.rowCount/limit})
 });
-// Employee Funtion
+// Employee Information Function
+app.get('/manager/employeeinfo', async (req, res)=>{
+  let rs = await pool.query('select * from management');
+  let page = req.query.page;
+  let limit = 20
+  if(page < 1)
+  page = 1;
+  if(page > (rs.rowCount/limit))
+  page = Math.ceil(rs.rowCount/limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page*limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  
+  res.render('employeeinfo', {info: info, page: page, numberpage: rs.rowCount/limit})
+})
 
 
-// Menu Funtion
+app.post('/addemployee', async (req,res)=>{
+  let username = req.body.empusername
+  let pass = req.body.emppass
+  let name = req.body.empname
+  let design = req.body.design
+  // let rs = await pool.query("INSERT INTO management VALUES ('"+username+"','"+pass+"','"+name+"','Actv','"+design+"');")
+  try {
+    let rs = await pool.query("INSERT INTO management VALUES ('"+username+"','"+pass+"','"+name+"','Actv','"+design+"');")
+    res.redirect('/manager/employeeinfo?page=1')
+  } catch (error) {
+    res.send('<p> Failed </p>')
+  }
+})
+
+app.post('/changeemployee', async (req, res)=>{
+  let userid = req.body.chuserid
+  let name = req.body.chpname
+  let design = req.body.chdesign
+  let rs = await pool.query("update management set user_name = '"+name+"', designation ='"+design+"' where user_id='"+userid+"'")
+  res.redirect('/manager/employeeinfo?page=1')
+})
+
+app.get('/manager/deleteemployee', async (req,res)=>{
+  let user_id = req.query.user_id
+  console.log(user_id)
+  let rs = await pool.query("delete from management where user_id = '"+user_id+"'")
+  res.redirect('/manager/employeeinfo?page=1')
+})
+// Menu Information Function
+
+app.get('/manager/menu', async (req, res)=>{
+  let rs = await pool.query('select * from menu');
+  let page = req.query.page;
+  let limit = 20
+  if(page < 1)
+  page = 1;
+  if(page > (rs.rowCount/limit))
+  page = Math.ceil(rs.rowCount/limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page*limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  
+  res.render('menu', {info: info, page: page, numberpage: rs.rowCount/limit})
+})
+
+// Customer Function
 app.get('/customer', (req,res)=>{
 
   res.render('customer')

@@ -1,230 +1,237 @@
 /* Login site style*/
-		.btn.btn-secondary,
-		.btn.btn-primary {
-			width: 100px;
-			margin: 0 auto 5px auto;
-			/*height: 40px;
+.btn.btn-secondary,
+.btn.btn-primary {
+  width: 100px;
+  margin: 0 auto 5px auto;
+  /*height: 40px;
 			margin-left: 90px;*/
-		}
-        button:hover {
-            opacity:1;
-          }
-		
-		#Check1 {
-			margin-top: 12px;
-		}
+}
+button:hover {
+  opacity: 1;
+}
 
-		#father {
-			background-color: #F6F8FA;
-			padding: 2.5rem;
-			width: 350px;
-			border: solid 3px;
-			border-radius: 5px;
-			margin: 0 auto 50px auto;
-		}
+#Check1 {
+  margin-top: 12px;
+}
 
-		label {
-			display: inline-flex;
-			align-items: center;
-			font-size: 1.125rem;
-			line-height: 40px;
-		}
-        .modal{
-            background-color:rgba(192,192,192,0.3);
-        }
-		.title {
-			font-size: 30px;
-			font-weight: 300;
-			margin: auto;
-			width: 360px;
-			color: green;
-			text-align: center;
-			text-shadow: 2px 2px 5px green;
-		}
+#father {
+  background-color: #f6f8fa;
+  padding: 2.5rem;
+  width: 350px;
+  border: solid 3px;
+  border-radius: 5px;
+  margin: 0 auto 50px auto;
+}
 
-		.interact {
-			display: flex;
-			flex-direction: column;
-            margin-top: 30px;
-		}
+label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.125rem;
+  line-height: 40px;
+}
+.modal {
+  background-color: rgba(192, 192, 192, 0.3);
+}
+.title {
+  font-size: 30px;
+  font-weight: 300;
+  margin: auto;
+  width: 360px;
+  color: green;
+  text-align: center;
+  text-shadow: 2px 2px 5px green;
+}
 
-		.main {
-			background-color: #282C34;
-		}
-		
+.interact {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
 
-        .signform{
-            padding: 4.5rem;
-            width: 620px;
-            margin: 4.5rem auto 50px auto;
-            background-color: #f1f1f1;
-        }
-        .cancelbtn {
-        padding: 14px 20px;
-        background-color: #f44336;
-        }
+.main {
+  background-color: #282c34;
+  height: 100vh;
+}
 
-        /* Float cancel and signup buttons and add an equal width */
-        .cancelbtn, .signupbtn {
-        float: left;
-        width: 50%;
-        }
+.signform {
+  padding: 4.5rem;
+  width: 620px;
+  margin: 4.5rem auto 50px auto;
+  background-color: #f1f1f1;
+}
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
 
-        
-        /* The Close Button (x) */
-        .close {
-        position: absolute;
-        right: 35px;
-        top: 15px;
-        font-size: 40px;
-        font-weight: bold;
-        color: #f1f1f1;
-        }
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn,
+.signupbtn {
+  float: left;
+  width: 50%;
+}
 
-        .close:hover,
-        .close:focus {
-        color: #f44336;
-        cursor: pointer;
-        }
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
 
-        .clearfix{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Clear floats */
-        .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
-        }
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+.clearfix {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
 /*Customer Style*/
-        .nav-link{
-            font-size: 30px;
-            font-weight: 700;
-            color: white;
-        }
-        #welcome-section{
-            background-image: url(/img/background.jpg);
-            height: 95vh;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            max-width: 100%;
-        }
-        .top-title {
-            font-family: 'Playball', cursive;
-            font-size: 120px;
-            font-weight: 400;
-        }
-        #welcome-section p{
-            font-size: 2rem;
-            font-style: italic;
-        }
-        hr{
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border: 0;
-            border-top: 1px solid #eee;
-        }
-        .aboutus {
-            margin: 0 auto 50px auto;
-            text-align: center;
-            font-size: 32px;
-            font-weight: 900;
-            width: 280px;
-            letter-spacing: 0.040em;
-            border: 1px solid #2f2e2f;
-        }
-        .navbar a:hover{
-            border-bottom: 3px solid white;
-        }
-        #menu{
-            background-image: url(/img/menu-background.jpg);
-            height: 95vh;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-        .menu-title{
-            font-family: 'Playball', cursive;
-            font-size: 120px;
-            font-weight: 400;
-            color: white;
-            border-bottom: 3px solid white;
-        }   
-        .text-content{
-            background-color: white;
-        }
-        .column.food ,.column.drink{
-            margin-top: 50px;
-            text-align: center;
-            width: 30%;
-            margin-left: 5px;
-            min-width: 200px;
-            margin-right: 5px;
-            position: relative;
-        }
-        .row{
-            background-color: white;
-        }
-        .column.food img, .column.drink img{
-            display: block;
-            margin: 0 auto 0 auto;
-            width: 200px;
-            height: 200px;
-        }
-        .column.food h4, .column.drink h4{
-            min-width: 200px;
-            text-align: center;
-        }
-        .show{
-            /* display: block; */
-        }
-        .hidden{
-            display: none;
-        }
+.nav-link {
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+}
+#welcome-section {
+  background-image: url(/img/background.jpg);
+  height: 95vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+.top-title {
+  font-family: "Playball", cursive;
+  font-size: 120px;
+  font-weight: 400;
+}
+#welcome-section p {
+  font-size: 2rem;
+  font-style: italic;
+}
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.aboutus {
+  margin: 0 auto 50px auto;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
+  width: 280px;
+  letter-spacing: 0.04em;
+  border: 1px solid #2f2e2f;
+}
+.navbar a:hover {
+  border-bottom: 3px solid white;
+}
+#menu {
+  background-image: url(/img/menu-background.jpg);
+  height: 95vh;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.menu-title {
+  font-family: "Playball", cursive;
+  font-size: 120px;
+  font-weight: 400;
+  color: white;
+  border-bottom: 3px solid white;
+}
+.text-content {
+  background-color: white;
+}
+.column.food,
+.column.drink {
+  margin-top: 50px;
+  text-align: center;
+  width: 30%;
+  margin-left: 5px;
+  min-width: 200px;
+  margin-right: 5px;
+  position: relative;
+}
+.row {
+  background-color: white;
+}
+.column.food img,
+.column.drink img {
+  display: block;
+  margin: 0 auto 0 auto;
+  width: 200px;
+  height: 200px;
+}
+.column.food h4,
+.column.drink h4 {
+  min-width: 200px;
+  text-align: center;
+}
+.show {
+  /* display: block; */
+}
+.hidden {
+  display: none;
+}
 /* Manager style*/
-        .sidenav{
-            height: 100%;
-            width: 200px;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            padding-top: 20px;
-        }
-        .sidenav a {
-            padding: 6px 8px 6px 16px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-          }
-          .sidenav a:hover {
-            color: #f1f1f1;
-          }
-          @media screen and (max-height: 450px) {
-            .sidenav {padding-top: 15px;}
-            .sidenav a {font-size: 18px;}
-          }
-          .main-content{
-              margin-left: 200px;
-              background-image: url(/img/background.jpg);
-          }
-          .pagination{
-              justify-content: center;
-          }
-          .info-content{
-              width: 80%;
-              margin: 50px auto 50px auto;
-              background-color: white;
-              padding: 10px 20px 20px 20px;
-              min-height: 100vh;
-          }
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+.main-content {
+  margin-left: 200px;
+  background-image: url(/img/background.jpg);
+}
+.pagination {
+  justify-content: center;
+}
+.info-content {
+  width: 80%;
+  margin: 50px auto 50px auto;
+  background-color: white;
+  padding: 10px 20px 20px 20px;
+  min-height: 100vh;
+}
