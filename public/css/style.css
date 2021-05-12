@@ -235,3 +235,17 @@ hr {
   padding: 10px 20px 20px 20px;
   min-height: 100vh;
 }
+.my-info{
+  background-color:white;
+  width: 80%;
+  margin: 50px auto 100px auto;
+  height: 100vh;
+}
+.img-avatar{
+  margin: 0 auto 50px auto;
+  padding-top: 10px;
+  display: block;
+  width: 250px;
+  height: auto;
+  
+}

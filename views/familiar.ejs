@@ -4,8 +4,10 @@
     <%var number=1%>
         <%var page%>
             <%var numberpage%>
+                <% var remember%>
 
                 <head>
+                    <script src="https://kit.fontawesome.com/f87c891e2c.js" crossorigin="anonymous"></script>
                     <meta charset="UTF-8">
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,10 +26,11 @@
                 <body>
                     <div class="sidenav">
                         <a href="/manager/sale">SaLing</a>
-                        <a href="/manager/menu?page=1">Menu</a>
-                        <a href="/manager/employeeinfo?page=1">Employee Infomation</a>
-                        <a href="/manager/customerinfo?page=1">Custumer Infomation</a>
-                        <a href="/manager">My Infomation</a>
+                        <a href="/manager/menu?page=1&user=<%=remember%>">Menu</a>
+                        <a href="/manager/employeeinfo?page=1&user=<%=remember%>">Employee Infomation</a>
+                        <a href="/manager/customerinfo?page=1&user=<%=remember%>">Custumer Infomation</a>
+                        <a href="/manager?user=<%=remember%>">My Infomation</a>
+                        <a href="/">Logout</a>
                     </div>
                     <div class="main-content">
                         <div class="title_taskbar"
@@ -46,9 +49,9 @@
                                 </a>
                               
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                  <li><a class="dropdown-item" href="/manager/customerinfo?page=1" >All Customer</a></li>
-                                  <li><a class="dropdown-item" href="/manager/customerinfo/top10?page=1">Top 10 with the most order</a></li>
-                                  <li><a class="dropdown-item" href="/manager/customerinfo/familiar?page=1">Familiar Customer</a></li>
+                                  <li><a class="dropdown-item" href="/manager/customerinfo?page=1&user=<%=remember%>" >All Customer</a></li>
+                                  <li><a class="dropdown-item" href="/manager/customerinfo/top10?page=1&user=<%=remember%>">Top 10 with the most order</a></li>
+                                  <li><a class="dropdown-item" href="/manager/customerinfo/familiar?page=1&user=<%=remember%>">Familiar Customer</a></li>
                                 </ul>
                               </div>
                         <table class="table table-striped">
@@ -97,7 +100,7 @@
                             <ul class="pagination">
                                 <% if (page> 1){%>
                                     <li class="page-item"><a class="page-link"
-                                            href="/manager/customerinfo/familiar?page=<%=parseInt(page)-1%>">Previous</a></li>
+                                            href="/manager/customerinfo/familiar?page=<%=parseInt(page)-1%>&user=<%=remember%>">Previous</a></li>
                                     <% } %>
                                         <% if (page==1) {%>
                                             <li class="page-item"><a class="page-link">Previous</a></li>
@@ -105,19 +108,19 @@
                                                 <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
                                                     <%if(i==page){%>
                                                         <li class="page-item active"><a class="page-link"
-                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
+                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>&user=<%=remember%>">
                                                                 <%=i%>
                                                             </a></li>
                                                         <%} else{%>
                                                             <li class="page-item"><a class="page-link"
-                                                                    href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>">
+                                                                    href="/manager/customerinfo/familiar?page=<%=parseInt(i)%>&user=<%=remember%>">
                                                                     <%=i%>
                                                                 </a></li>
                                                             <%}%>
                                                                 <%}%>
                                                                     <% if (page <=(numberpage)){%>
                                                                         <li class="page-item"><a class="page-link"
-                                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(page) +1%>">Next</a>
+                                                                                href="/manager/customerinfo/familiar?page=<%=parseInt(page) +1%>&user=<%=remember%>">Next</a>
                                                                         </li>
                                                                         <% } %>
                                                                             <% if (page> (numberpage)){%>
@@ -126,6 +129,54 @@
                                                                                 <% } %>
                             </ul>
                         </nav>
+                        <footer class="bg-dark text-center text-white">
+                            <div class="container p-4 pb-0">
+                              <section class="mb-4">
+                                <a
+                                  class="btn btn-outline-light btn-floating m-1"
+                                  href="https://www.facebook.com/whit3sh4dow/"
+                                  target="_blank"
+                                  role="button"
+                                  ><i class="fab fa-facebook-f"></i
+                                ></a>
+                      
+                                <a
+                                  class="btn btn-outline-light btn-floating m-1"
+                                  href="https://twitter.com/NguynMi15952450"
+                                  target="_blank"
+                                  role="button"
+                                  ><i class="fab fa-twitter"></i
+                                ></a>
+                      
+                                <a
+                                  class="btn btn-outline-light btn-floating m-1"
+                                  href="https://mail.google.com/mail/u/0/#inbox"
+                                  role="button"
+                                  target="_blank"
+                                  ><i class="fab fa-google"></i
+                                ></a>
+                      
+                                <a
+                                  class="btn btn-outline-light btn-floating m-1"
+                                  href="https://github.com/N0tail12"
+                                  role="button"
+                                  target="_blank"
+                                  ><i class="fab fa-github"></i
+                                ></a>
+                              </section>
+                            </div>
+                      
+                            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+                              © 2021 Copyright:
+                              <a
+                                class="text-white"
+                                href="https://www.facebook.com/whit3sh4dow/"
+                                target="_blank"
+                                >N0tail12</a
+                              >
+                            </div>
+                            <!-- Copyright -->
+                          </footer>
                     </div>
 
                 </body>

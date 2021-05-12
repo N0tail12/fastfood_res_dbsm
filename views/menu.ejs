@@ -1,124 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
-<%var info%>
-        <%var page%>
-            <%var numberpage%>
+  <%var info%> <%var page%> <%var numberpage%> <% var remember%>
 
-                <head>
-                    <meta charset="UTF-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <link rel="stylesheet" href="../../css/style.css">
-                    <script src="https://kit.fontawesome.com/f87c891e2c.js" crossorigin="anonymous"></script>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-                        rel="stylesheet"
-                        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-                        crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/f87c891e2c.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://kit.fontawesome.com/f87c891e2c.js" crossorigin="anonymous"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
 
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-                        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-                        crossorigin="anonymous"></script>
-                    <title>Customer Infomation</title>
-                </head>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
+    <title>Customer Infomation</title>
+  </head>
 
-                <body>
-                    <div class="sidenav">
-                        <a href="/manager/sale">SaLing</a>
-                        <a href="/manager/menu?page=1">Menu</a>
-                        <a href="/manager/employeeinfo?page=1">Employee Infomation</a>
-                        <a href="/manager/customerinfo?page=1">Custumer Infomation</a>
-                        <a href="/manager">My Infomation</a>
-                    </div>
-                    <div class="main-content">
-                        <div class="title_taskbar"
-                            style="width: 100%; height: 100px;background-color: black;position: center;margin: auto; font-size: 33px">
-                            <a href="/manager">
-                                <div class="text-center">
-                                    <img src="../../img/JOEY2.png" class="rounded" alt="JR">
-                                </div>
-                            </a>
+  <body>
+    <div class="sidenav">
+      <a href="/manager/sale">SaLing</a>
+      <a href="/manager/menu?page=1&user=<%=remember%>">Menu</a>
+      <a href="/manager/employeeinfo?page=1&user=<%=remember%>">Employee Infomation</a>
+      <a href="/manager/customerinfo?page=1&user=<%=remember%>">Custumer Infomation</a>
+      <a href="/manager?user=<%=remember%>">My Infomation</a>
+      <a href="/">Logout</a>
+    </div>
+    <div class="main-content">
+      <div
+        class="title_taskbar"
+        style="
+          width: 100%;
+          height: 100px;
+          background-color: black;
+          position: center;
+          margin: auto;
+          font-size: 33px;
+        "
+      >
+        <a href="/manager">
+          <div class="text-center">
+            <img src="../../img/JOEY2.png" class="rounded" alt="JR" />
+          </div>
+        </a>
+      </div>
+      <div class="info-content">
+        <h1 style="width: 400px; margin: 0 auto 10px auto; text-align: center">
+          Menu Infomation
+        </h1>
+        <button
+          type="button"
+          class="btn btn-primary"
+          style="float: right"
+          onclick="document.getElementById('addmenu').style.display='block'"
+        >
+          <i class="fas fa-plus" style="margin-right: 10px"></i>Add
+        </button>
+        <div id="addmenu" class="modal">
+          <span
+            onclick="document.getElementById('addmenu').style.display='none'"
+            class="close"
+            title="Close Modal"
+            >&times;</span
+          >
+          <form class="signform" method="POST" action="/addmenu">
+            <div class="form-inside">
+              <h1 style="text-align: center">Add a Menu</h1>
+              <input type="hidden" name="hidden" value="<%=remember%>">
+              <label for="menuid">ID</label>
+              <input type="text"
+                name="menuid"
+                class="form-control"
+                id="menuid"
+                placeholder="ID"
+                autofocus
+                required
+              />
+              <label for="menuname">Name</label>
+              <input
+                type="text"
+                name="menuname"
+                class="form-control"
+                id="menuname"
+                placeholder="Name"
+                required
+              />
+              <label for="empass">Price</label>
+              <input
+                type="text"
+                name="menuprice"
+                class="form-control"
+                id="empass"
+                placeholder="$$"
+                required
+              />
+              <label for="category">Category</label><br />
+              <!-- <input type="text" name="designation" class="form-control" id="design" required placeholder="Designation"> -->
+              <select name="category" class="form-select">
+                <option value="food" selected>Food</option>
+                <option value="drink">Drink</option>
+              </select>
+              <div class="clearfix">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  style="width: 100%; margin-top: 20px"
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  onclick="document.getElementById('addmenu').style.display='none'"
+                  class="btn btn-danger"
+                  style="width: 100%"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Price</th>
+              <th scope="col">Category</th>
+              <th scope="col">Status</th>
+              <th scope="col">Option</th>
+            </tr>
+          </thead>
+          <tbody id="print">
+            <%info.forEach(function(menu){%>
+            <tr>
+              <th scope="row"><%=menu.item_id%></th>
+              <td><%=menu.item_name%></td>
+              <td>
+                <img
+                  src="../../<%=menu.description%>"
+                  class="rounded"
+                  alt="JR"
+                  style="height: 50px; width: 50px"
+                />
+              </td>
+              <td><%=menu.price%></td>
+              <td><%=menu.catagory%></td>
+              <td><%=menu.status%></td>
+              <td>
+                <button type="button" class="btn btn-success" onclick="document.getElementById('changemenu<%=menu.item_id%>').style.display='block'">Change</button>
+                <div id="changemenu<%=menu.item_id%>" class="modal">
+                    <span
+                      onclick="document.getElementById('changemenu<%=menu.item_id%>').style.display='none'"
+                      class="close"
+                      title="Close Modal"
+                      >&times;</span
+                    >
+                    <form class="signform" method="POST" action="/changemenu">
+                      <div class="form-inside">
+                        <h1 style="text-align: center">Change Menu</h1>
+                        <input type="hidden" name="hidden" value="<%=remember%>">
+                        <label for="chid">ID</label>
+                        <input type="text"
+                          name="chid"
+                          class="form-control"
+                          readonly
+                          value="<%=menu.item_id%>"
+                        />
+                        <label for="menuname">Name</label>
+                        <input
+                          type="text"
+                          name="chname"
+                          class="form-control"
+                          id="menuname"
+                          value="<%=menu.item_name%>"
+                          
+                        />
+                        <label for="empass">Price</label>
+                        <input
+                          type="text"
+                          name="chprice"
+                          class="form-control"
+                          id="empass"
+                          value="<%=menu.price%>"
+                        />
+                        <label for="chcategory">Category</label><br />
+                        <!-- <input type="text" name="designation" class="form-control" id="design" required placeholder="Designation"> -->
+                        <select name="chcategory" class="form-select">
+                          <option value="food" selected>Food</option>
+                          <option value="drink">Drink</option>
+                        </select>
+                        <label for="status">Status</label><br>
+                        <select name="status" class="form-select">
+                            <option value="Available" selected>Available</option>
+                            <option value="Not Available">Not Available</option>
+                        </select>
+                        <div class="clearfix">
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="width: 100%; margin-top: 20px"
+                          >
+                            Change
+                          </button>
+                          <button
+                            type="button"
+                            onclick="document.getElementById('changemenu<%=menu.item_id%>').style.display='none'"
+                            class="btn btn-danger"
+                            style="width: 100%"
+                          >
+                            Cancel
+                          </button>
                         </div>
-                        <div class="info-content">
-                            <h1 style="width: 400px; margin: 0 auto 10px auto; text-align: center;">Customer Infomation
-                            </h1>
-                            <button type="button" class="btn btn-primary" style="float: right;"><i class="fas fa-plus" style="margin-right: 10px;"></i>Add</button>
-                            <table class="table table-striped">
-                            <thead> 
-                            <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Option</th>
-                                </tr>
-                            </thead>
-                            <tbody id="print">
-                                <%info.forEach(function(menu){%>
-                                    <tr>
-                                        <th scope="row">
-                                            <%=menu.item_id%>
-                                        </th>
-                                        <td>
-                                            <%=menu.item_name%>
-                                        </td>
-                                        <td>
-                                            <img src="../../<%=menu.description%>" class="rounded" alt="JR" style="height: 50px;width: 50px;">
-                                        </td>
-                                        <td>
-                                            <%=menu.price%>
-                                        </td>
-                                        <td>
-                                            <%=menu.catagory%>
-                                        </td>
-                                        <td>
-                                            <%=menu.status%>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-success">Change</button>
-                                            <button type="button" class="btn btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                        <% }); %>
-                            </tbody>
-                        </table>
-                    </div>
-                        <nav aria-label="Page navigation example" style="text-align: center;">
-                            <ul class="pagination">
-                                <% if (page> 1){%>
-                                    <li class="page-item"><a class="page-link"
-                                            href="/manager/employeeinfo?page=<%=parseInt(page)-1%>">Previous</a></li>
-                                    <% } %>
-                                        <% if (page==1) {%>
-                                            <li class="page-item"><a class="page-link">Previous</a></li>
-                                            <%}%>
-                                                <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
-                                                    <%if(i==page){%>
-                                                        <li class="page-item active"><a class="page-link"
-                                                                href="/manager/employeeinfo?page=<%=parseInt(i)%>">
-                                                                <%=i%>
-                                                            </a></li>
-                                                        <%} else{%>
-                                                            <li class="page-item"><a class="page-link"
-                                                                    href="/manager/employeeinfo?page=<%=parseInt(i)%>">
-                                                                    <%=i%>
-                                                                </a></li>
-                                                            <%}%>
-                                                                <%}%>
-                                                                    <% if (page <=(numberpage)){%>
-                                                                        <li class="page-item"><a class="page-link"
-                                                                                href="/manager/employeeinfo?page=<%=parseInt(page) +1%>">Next</a>
-                                                                        </li>
-                                                                        <% } %>
-                                                                            <% if (page> (numberpage)){%>
-                                                                                <li class="page-item"><a
-                                                                                        class="page-link">Next</a></li>
-                                                                                <% } %>
-                            </ul>
-                        </nav>
-                        </div>
-
-                </body>
-
+                      </div>
+                    </form>
+                  </div>
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  onclick="window.location.href='/manager/deletemenu?id=<%=menu.item_id%>&user=<%=remember%>'; return confirm('Are you sure?')"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <nav aria-label="Page navigation example" style="text-align: center">
+        <ul class="pagination">
+          <% if (page> 1){%>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="/manager/employeeinfo?page=<%=parseInt(page)-1%>&user=<%=remember%>"
+              >Previous</a
+            >
+          </li>
+          <% } %> <% if (page==1) {%>
+          <li class="page-item"><a class="page-link">Previous</a></li>
+          <%}%> <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
+          <%if(i==page){%>
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="/manager/employeeinfo?page=<%=parseInt(i)%>&user=<%=remember%>"
+            >
+              <%=i%>
+            </a>
+          </li>
+          <%} else{%>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="/manager/employeeinfo?page=<%=parseInt(i)%>&user=<%=remember%>"
+            >
+              <%=i%>
+            </a>
+          </li>
+          <%}%> <%}%> <% if (page <=(numberpage)){%>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="/manager/employeeinfo?page=<%=parseInt(page) +1%>&user=<%=remember%>"
+              >Next</a
+            >
+          </li>
+          <% } %> <% if (page> (numberpage)){%>
+          <li class="page-item"><a class="page-link">Next</a></li>
+          <% } %>
+        </ul>
+      </nav>
+      <footer class="bg-dark text-center text-white">
+        <div class="container p-4 pb-0">
+          <section class="mb-4">
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://www.facebook.com/whit3sh4dow/"
+              target="_blank"
+              role="button"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+  
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://twitter.com/NguynMi15952450"
+              target="_blank"
+              role="button"
+              ><i class="fab fa-twitter"></i
+            ></a>
+  
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://mail.google.com/mail/u/0/#inbox"
+              role="button"
+              target="_blank"
+              ><i class="fab fa-google"></i
+            ></a>
+  
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://github.com/N0tail12"
+              role="button"
+              target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+          </section>
+        </div>
+  
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+          © 2021 Copyright:
+          <a
+            class="text-white"
+            href="https://www.facebook.com/whit3sh4dow/"
+            target="_blank"
+            >N0tail12</a
+          >
+        </div>
+        <!-- Copyright -->
+      </footer>
+    </div>
+  </body>
+  <script>
+    var addmenu = document.getElementById("addmenu");
+    window.onclick = function (event) {
+      if (event.target == addmenu) {
+        addmenu.style.display = "none";
+      }
+    };
+  </script>
 </html>
