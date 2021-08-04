@@ -70,7 +70,7 @@ app.post('/home', async (req, res) => {
   try {
     let rs = await pool.query("Select * from customer_info where email = '" + user + "' and pass = '" + pass + "' and status = 'Active'")
     if (rs.rowCount > 0) {
-      res.redirect('/customer?user=' + user + '&page=1')
+      res.redirect('/customer?user=' + user)
      
     }
     else {
@@ -197,14 +197,23 @@ app.post('/changeemployee', async (req, res)=>{
 app.get('/manager/deleteemployee', async (req,res)=>{
   let user_id = req.query.user_id
   let remember = req.query.user
-  console.log(user_id)
   let rs = await pool.query("delete from management where user_id = '"+user_id+"'")
   res.redirect('/manager/employeeinfo?page=1&user=' + remember)
 })
 // Menu Information Function
 
 app.get('/manager/menu', async (req, res)=>{
-  let rs = await pool.query('select * from menu item_id');
+  let rs = await pool.query('select * from menu');
+  function compare(a, b) {
+    if ( parseInt(a.item_id) < parseInt(b.item_id) ){
+      return -1;
+    }
+    if ( parseInt(a.item_id) > parseInt(b.item_id) ){
+      return 1;
+    }
+    return 0;
+  }
+  rs.rows.sort(compare);
   let page = req.query.page;
   let remember = req.query.user
   let limit = 20
@@ -253,9 +262,23 @@ app.post('/changemenu', async (req,res)=>{
 //Sale Function
 
 // Customer Function
-app.get('/customer', (req,res)=>{
-
-  res.render('customer')
+app.get('/customer', async (req,res)=>{
+  let rs = await pool.query("select * from menu")
+  function compare(a, b) {
+    if ( parseInt(a.item_id) < parseInt(b.item_id) ){
+      return -1;
+    }
+    if ( parseInt(a.item_id) > parseInt(b.item_id) ){
+      return 1;
+    }
+    return 0;
+  }
+  rs.rows.sort(compare);
+  res.render('customer', {info : rs.rows})
+})
+app.get('/getOrderId', async (req,res) => {
+  let rs = await pool.query("select order_id from order_info order by order_id desc limit 1")
+  res.json(rs.rows)
 })
 
 
