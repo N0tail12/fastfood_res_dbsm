@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <% var message = 'Login Success'%> <% var type = 'success'%>
+  <% var message = 'Login Success'%> <% var type = 'success'%> <%var info%>
 
   <head>
     <meta charset="UTF-8" />
@@ -41,6 +41,15 @@
       ></button>
     </div>
     <%}%>
+    <div
+      class="alert alert-success alert-dismissible fade show"
+      role="alert"
+      style="display: none"
+      id="oke-alert"
+    >
+      <strong> Add successfully. Check Your Cart </strong>
+      <button type="button" class="btn-close" id="close-button"></button>
+    </div>
     <nav class="navbar navbar-dark bg-dark fixed-top">
       <a
         class="navbar-brand navactive"
@@ -67,7 +76,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/">Log out</a>
         </li>
-        -->
       </ul>
     </nav>
 
@@ -79,7 +87,7 @@
     <section id="about-us" style="padding-top: 100px; padding-bottom: 100px">
       <div class="text-content container">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6" id="about-us">
             <h1 class="aboutus">About Us</h1>
             <div class="fa fa-cutlery fa-2x"></div>
             <p>
@@ -119,6 +127,64 @@
         </div>
       </div>
     </section>
+    <div class="cart">
+      <div>
+        <button
+          type="button"
+          style="border: none; background-color: white"
+          data-bs-toggle="modal"
+          data-bs-target="#order"
+        >
+          <i class="fas fa-cart-plus fa-2x"></i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="order"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Order</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Order Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody id="insert-order">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <section id="menu">
       <div>
         <h2 class="menu-title">Menu</h2>
@@ -134,59 +200,22 @@
           Drink
         </button>
       </div>
-      <!-- <div class="container"> -->
-      <!-- <ul id="portfolio" style="background-color: white;">
-                            <li class="column food">
-                                <img src="img/shami.jpg" alt="shami" style="width: 200px; height: 200px;">
-                                <h2 >Shami</h2>
-                            </li>
-                            <li class="column food">
-                                <img src="img/pizza.jpg" alt="pizza" style="width: 200px; height: 200px;">
-                                <h2>Pizza</h2>
-                            </li>
-                            <li class="column food">
-                                <img src="img/hamburger.jpg" alt="hamburger" style="width: 200px; height: 200px;">
-                                <h2>Hamburger</h2>
-                            </li>
-                            <li class="column food">
-                                <img src="img/shawarma.jpg" alt="shawarma" style="width: 200px; height: 200px;">
-                                <h2>Shawarma</h2>
-                            </li>
-                            <li class="column drink">
-                                <img src="img/pepsi.jpg" alt="pepsi" style="width: 200px; height: 200px;">
-                                <h2>Pepsi</h2>
-                            </li>
-                            <li class="column drink">
-                                <img src="img/coca.jpg" alt="coca" style="width: 200px; height: 200px;">
-                                <h2>Coca</h2>
-                            </li>
-                        </ul>
-                        </div> -->
-      <div class="row" style="margin-top: 20px">
-        <div class="column food">
-          <img src="img/shami.jpg" alt="shami" />
-          <h4>Shami</h4>
+      <div
+        class="row"
+        id="menu-section"
+        style="margin-top: 20px; margin-bottom: 50px"
+      >
+        <%info.forEach(function(em){%>
+        <div
+          class="column <%=em.catagory%>"
+          style="box-shadow: 0 3px 10px rgb(0 0 0 / 0.2)"
+        >
+          <img src="<%=em.description%>" alt="<%=em.item_name%>" />
+          <h4><%=em.item_name%></h4>
+          <h6><%=em.price%></h6>
+          <button type="button" class="btn btn-primary">Add</button>
         </div>
-        <div class="column food">
-          <img src="img/pizza.jpg" alt="pizza" />
-          <h4>Pizza</h4>
-        </div>
-        <div class="column food">
-          <img src="img/hamburger.jpg" alt="hamburger" />
-          <h4>Hamburger</h4>
-        </div>
-        <div class="column food">
-          <img src="img/shawarma.jpg" alt="shawarma" />
-          <h4>Shawarma</h4>
-        </div>
-        <div class="column drink">
-          <img src="img/pepsi.jpg" alt="pepsi" />
-          <h4>Pepsi</h4>
-        </div>
-        <div class="column drink">
-          <img src="img/coca.jpg" alt="coca" />
-          <h4>Coca</h4>
-        </div>
+        <%});%>
       </div>
     </section>
     <section id="contact">
@@ -248,5 +277,6 @@
       <!-- Copyright -->
     </footer>
     <script src="/js/style.js"></script>
+    <script src="/js/order_process.js"></script>
   </body>
 </html>
