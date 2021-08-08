@@ -165,7 +165,7 @@
                     <th>Order Id</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Quantity & Delivery Day</th>
                   </tr>
                 </thead>
                 <tbody id="insert-order">
@@ -181,6 +181,9 @@
             >
               Close
             </button>
+            
+            <button type="button" class="btn btn-success" id="order-button">Order</button>
+            
           </div>
         </div>
       </div>
@@ -212,6 +215,7 @@
         >
           <img src="<%=em.description%>" alt="<%=em.item_name%>" />
           <h4><%=em.item_name%></h4>
+          <h5 class="hidden"><%=em.item_id%></h5>
           <h6><%=em.price%></h6>
           <button type="button" class="btn btn-primary">Add</button>
         </div>
