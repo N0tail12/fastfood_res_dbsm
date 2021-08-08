@@ -8,17 +8,24 @@ const order_id = async () => {
   const data = await res.json();
   let test_id = data[0].order_id;
   test = parseInt(test_id);
+  console.log("oke");
   return test_id;
 };
 order_id();
 function createList(index) {
+  var d = new Date();
+  var date = d.toJSON().slice(0,10);
   var tr = document.createElement("tr");
   tr.className = "show";
+  tr.id = "planned_item";
   var name = document.createElement("th");
   var price = document.createElement("th");
+  var item_id = document.createElement("th");
   var id = document.createElement("th");
   id.className = "Id";
   name.textContent = menu.getElementsByTagName("h4")[index].innerHTML;
+  item_id.textContent = menu.getElementsByTagName("h5")[index].innerHTML;
+  item_id.className = "hidden";
   price.textContent = menu.getElementsByTagName("h6")[index].innerHTML;
   id.textContent = test + 1;
   test += 1;
@@ -26,6 +33,11 @@ function createList(index) {
   var quantity = document.createElement("input");
   quantity.type = "number";
   quantity.id = "quantity";
+  quantity.value = 1;
+  var time = document.createElement("input");
+  time.type = "date";
+  time.id = "order_time";
+  time.value = date;
   var button = document.createElement("button");
   button.type = "button";
   button.className = "btn-close";
@@ -33,15 +45,17 @@ function createList(index) {
   tr.appendChild(name);
   tr.appendChild(price);
   tr.appendChild(quantity);
+  tr.appendChild(time);
   tr.appendChild(button);
+  tr.appendChild(item_id);
   cart.appendChild(tr);
 }
-function updateList(index, orderList){
+function updateList(index, orderList) {
   test -= 1;
-  console.log(index)
-  for(let i = index; i < orderList.length; ++i){
-    let tmp = parseInt(orderList.item(i).getElementsByClassName("Id").item(0).innerHTML)
-    console.log('tmp :',tmp);
+  for (let i = index; i < orderList.length; ++i) {
+    let tmp = parseInt(
+      orderList.item(i).getElementsByClassName("Id").item(0).innerHTML
+    );
     orderList.item(i).getElementsByClassName("Id").item(0).innerHTML = tmp - 1;
   }
 }
@@ -55,14 +69,45 @@ for (let index = 0; index < show.length; index++) {
       oke.style.display = "none";
     };
     var btns = cart.getElementsByClassName("btn-close");
-    console.log(btns);
     var orderList = cart.getElementsByClassName("show");
     for (let index = 0; index < btns.length; index++) {
-      btns[index].onclick = () =>{
-        console.log(orderList.item(index).getElementsByClassName("Id").item(0).innerHTML)
+      btns[index].onclick = () => {
         orderList.item(index).classList += " hidden";
         updateList(index, orderList);
-      }
+      };
     }
   });
+}
+var addOrder = async (data) =>{
+  return await fetch('/rainbow', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+}
+var orderButton = document.getElementById("order-button");
+var userName = document.location.href.split('?')[1].split('=')[1];
+orderButton.onclick = () =>{
+  var orderList = cart.getElementsByClassName("show");
+  for (let index = 0; index < orderList.length; index++) {
+    if(orderList.item(index).classList.length == 1){
+      var idSend = orderList.item(index).getElementsByClassName("Id").item(0).innerHTML;
+      var todayDate = new Date().toJSON().slice(0,10);
+      var delDay = document.getElementById("order_time").value;
+      var itemId = orderList.item(index).getElementsByClassName("hidden").item(0).innerHTML;
+      var numberDisk = document.getElementById("quantity").value;
+      var data = {
+        order_id: idSend,
+        torcv: todayDate,
+        todel: delDay,
+        item_id: itemId,
+        quantity: numberDisk,
+        user_id: userName
+      };
+      addOrder(data);
+    }
+  }
+  //location.reload();
 }

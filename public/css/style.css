@@ -215,6 +215,14 @@ hr {
   transform: translateX(-50%);
   z-index: 1030;
 }
+#quantity{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+#order_time{
+  width: 110px;
+  margin-right: 5px;
+}
 @keyframes fadeOut {
   from {
   	opacity: 1;
