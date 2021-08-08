@@ -1,11 +1,11 @@
 var express = require("express");
-var bodyParser = require("body-parser");
+//var bodyParser = require("body-parser");
 var session = require("express-session");
 var flash = require('connect-flash');
 var app = express();
 var cookieParser = require('cookie-parser');
 // var pgdbsession = require('connect-pg-simple')(session);
-var items
+app.use(express.json());
 app.use(express.static("public"));
 app.use('/css', express.static(__dirname + '/lib/bootstrap/css'));
 app.use('/js', express.static(__dirname + '/lib/bootstrap/js'));
@@ -70,8 +70,7 @@ app.post('/home', async (req, res) => {
   try {
     let rs = await pool.query("Select * from customer_info where email = '" + user + "' and pass = '" + pass + "' and status = 'Active'")
     if (rs.rowCount > 0) {
-      res.redirect('/customer?user=' + user)
-     
+      res.redirect('/customer?user=' + user) 
     }
     else {
       rs = await pool.query("Select * from management where user_id = '" + user + "' and pass = '" + pass + "' and status = 'Actv'");
@@ -280,5 +279,17 @@ app.get('/getOrderId', async (req,res) => {
   let rs = await pool.query("select order_id from order_info order by order_id desc limit 1")
   res.json(rs.rows)
 })
-
+app.post('/rainbow', async (req, res) => {
+  let getCooker = await pool.query("select user_id\
+  from management\
+  where status != 'Blkd' and user_id in (\
+      select user_id\
+      from order_items\
+      where status = 'Pending'\
+      group by(user_id)\
+      order by(count(*))\
+      limit 1)")
+  console.log(getCooker.rows)
+  res.end();
+})
 
