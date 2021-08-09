@@ -1,12 +1,15 @@
 var menu = document.getElementById("menu-section");
 var show = menu.getElementsByClassName("btn");
 var cart = document.getElementById("insert-order");
+var userName = document.location.href.split('?')[1].split('=')[1];
+var profile = document.getElementById("my-profile");
+profile.href += "?user=" + userName;
 let test;
 var orderArray = [];
 const order_id = async () => {
   const res = await fetch("/getOrderId");
   const data = await res.json();
-  let test_id = data[0].order_id;
+  let test_id = data.order_id;
   test = parseInt(test_id);
   console.log("oke");
   return test_id;
@@ -85,11 +88,14 @@ var addOrder = async (data) =>{
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-  })
+  }).then(res => res.json())
+  .then(res => res.result);
 }
 var orderButton = document.getElementById("order-button");
-var userName = document.location.href.split('?')[1].split('=')[1];
+var ctn = '';
+var notification = document.getElementById("notification");
 orderButton.onclick = () =>{
+  notification.innerHTML = "";
   var orderList = cart.getElementsByClassName("show");
   for (let index = 0; index < orderList.length; index++) {
     if(orderList.item(index).classList.length == 1){
@@ -106,8 +112,42 @@ orderButton.onclick = () =>{
         quantity: numberDisk,
         user_id: userName
       };
-      addOrder(data);
-    }
+    let rs = async () => {return await addOrder(data)};
+    rs().then(res =>{
+      if(res){
+        console.log("oke?")
+        ctn += `<div
+        class="alert alert-success alert-dismissible fade show"
+        role="alert"
+      >
+        <strong> Add successfully. </strong>
+        <button type="button" 
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"">
+        </button>
+      </div>`
+      orderList.item(index).classList += " hidden";
+      }
+      else{
+        console.log("no");
+        ctn += `<div
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+      >
+        <strong>An error occurred while adding order ` + data.order_id + `. </strong>
+        <button type="button" 
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"">
+        </button>
+      </div>`
+      }
+      notification.innerHTML = ctn;
+    })
   }
+  ctn = '';
+  }
+  
   //location.reload();
 }

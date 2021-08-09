@@ -275,11 +275,28 @@ app.get('/customer', async (req,res)=>{
   rs.rows.sort(compare);
   res.render('customer', {info : rs.rows})
 })
+app.get('/customer/profile', async (req, res) => {
+  let user_id = req.query.user;
+  res.json(user_id);
+})
+
+//some api
 app.get('/getOrderId', async (req,res) => {
-  let rs = await pool.query("select order_id from order_info order by order_id desc limit 1")
-  res.json(rs.rows)
+  let rs = await pool.query("select order_id from order_info");
+  function compare(a, b) {
+    if ( parseInt(a.order_id) < parseInt(b.order_id) ){
+      return -1;
+    }
+    if ( parseInt(a.order_id) > parseInt(b.order_id) ){
+      return 1;
+    }
+    return 0;
+  }
+  rs.rows.sort(compare);
+  res.json(rs.rows[rs.rows.length - 1]);
 })
 app.post('/rainbow', async (req, res) => {
+  try{
   let getCooker = await pool.query("select user_id\
   from management\
   where status != 'Blkd' and user_id in (\
@@ -288,8 +305,15 @@ app.post('/rainbow', async (req, res) => {
       where status = 'Pending'\
       group by(user_id)\
       order by(count(*))\
-      limit 1)")
-  console.log(getCooker.rows)
-  res.end();
+      limit 1)");
+  let insertInfo = await pool.query("insert into order_info values('"+req.body.order_id+"','"+req.body.user_id+"','"+req.body.torcv+"','"+req.body.todel+"')");
+  let insertItems = await pool.query("insert into order_items values('"+req.body.order_id+"','"+req.body.item_id+"','"+req.body.quantity+"', 'Pending', '"+getCooker.rows[0].user_id+"')");
+  console.log(getCooker.rows[0].user_id);
+  res.json({result: true});
+  }
+  catch{
+    console.log("Something Wrong!")
+    res.json({result: false});
+  }
 })
 
