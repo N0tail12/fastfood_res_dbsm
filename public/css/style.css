@@ -99,6 +99,9 @@ label {
   display: table;
 }
 /*Customer Style*/
+.customer_info{
+  background-image: url(/img/background.jpg);
+}
 .nav-link {
   font-size: 30px;
   font-weight: 700;
@@ -241,6 +244,21 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#customer_name{
+  margin-left: 103.21px;
+}
+#customer_email{
+  margin-left: 110.27px;
+}
+#customer_area{
+  margin-left: 114.32px;
+}
+#customer_town{
+  margin-left: 109.33px;
+}
+#customer_phone{
+  margin-left: 30px;
 }
 /* Manager style*/
 .sidenav {

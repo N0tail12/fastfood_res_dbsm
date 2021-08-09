@@ -277,7 +277,9 @@ app.get('/customer', async (req,res)=>{
 })
 app.get('/customer/profile', async (req, res) => {
   let user_id = req.query.user;
-  res.json(user_id);
+  let rs = await pool.query("select * from customer_info where email = '"+user_id+"'")
+  res.render('myProfile', {info: rs.rows[0]});
+  // res.json(rs.rows[0]);
 })
 
 //some api
