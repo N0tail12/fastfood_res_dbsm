@@ -3,7 +3,7 @@ var show = menu.getElementsByClassName("btn");
 var cart = document.getElementById("insert-order");
 var userName = document.location.href.split('?')[1].split('=')[1];
 var profile = document.getElementById("my-profile");
-profile.href += "?user=" + userName;
+profile.href += "?user=" + userName + "&page=1";
 let test;
 var orderArray = [];
 const order_id = async () => {
