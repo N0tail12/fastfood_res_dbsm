@@ -382,7 +382,14 @@ app.get("/customer/profile", async (req, res) => {
   res.render("myProfile", { info: rs.rows[0] });
   // res.json(rs.rows[0]);
 });
-
+app.post("/customer/profile", async(req, res) => {
+  let email = req.body.customer_email;
+  let phoneNumber = req.body.customer_phone;
+  let area = req.body.customer_area;
+  let town = req.body.customer_town;
+  let rs = await pool.query("update customer_info set phone = '"+phoneNumber+"', area = '"+area+"', town = '"+town+"' where email = '"+email+"'");
+  res.redirect("/customer/profile?user=" + email + "&page=1");
+})
 //some api
 app.get("/getOrderId", async (req, res) => {
   let rs = await pool.query("select order_id from order_info");
@@ -460,3 +467,12 @@ app.post("/getAllOrder", async (req, res) => {
   const info = rs.rows.slice(startIndex, endIndex);
   res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
 });
+app.post("/cancelOrder", async (req, res) => {
+  let id = req.body.order_id;
+  try{
+    let rs = await pool.query("update order_items set status = 'Cancel' where order_id = '"+ id +"'");
+    res.json({result: true});
+  }catch{
+    res.json({result: false});
+  }
+})

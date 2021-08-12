@@ -3,6 +3,15 @@ var email = document.getElementById("customer_email").value;
 var page = parseInt(
   document.location.href.split("?")[1].split("&")[1].split("=")[1]
 );
+var changeInfo = document.getElementById("change-info");
+changeInfo.onclick = () => {
+  document.getElementById("customer_phone").disabled = false;
+  document.getElementById("customer_area").disabled = false;
+  document.getElementById("customer_town").disabled = false;
+  document.getElementById("change-button").disabled = false;
+};
+var changeButton = document.getElementById("change-button");
+changeButton.onclick = () => {};
 var goPageGo = document.getElementById("go-page");
 var data = { email: email, page: page };
 var getAllOrder = async (data) => {
@@ -12,6 +21,15 @@ var getAllOrder = async (data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  }).then((res) => res.json());
+};
+var cancelOrder = async (id) => {
+  return await fetch("/cancelOrder", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(id),
   }).then((res) => res.json());
 };
 getAllOrder(data).then((res) => {
@@ -30,7 +48,7 @@ getAllOrder(data).then((res) => {
     var status = document.createElement("td");
     status.textContent = res.order[index].status;
     var close = document.createElement("button");
-    close.type = "submit";
+    close.type = "button";
     close.style.backgroundColor = "#dc3545";
     close.style.paddingTop = "5px";
     close.className = "btn btn-danger";
@@ -49,6 +67,22 @@ getAllOrder(data).then((res) => {
     tr.appendChild(status);
     tr.appendChild(close);
     content.appendChild(tr);
+  }
+  var cancelButton = document.getElementsByClassName("btn btn-danger");
+  var orderID = content.getElementsByTagName("tr");
+  for (let index = 0; index < cancelButton.length; ++index) {
+    if (!cancelButton[index].disabled) {
+      cancelButton[index].addEventListener("click", () => {
+        let id = {
+          order_id: orderID[index].getElementsByTagName("td")[0].innerHTML,
+        };
+        cancelOrder(id).then((res) => {
+          if (res) {
+            location.reload();
+          }
+        });
+      });
+    }
   }
   if (page > 1) {
     var previous = document.createElement("li");

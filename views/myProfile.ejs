@@ -53,11 +53,11 @@
                                     <br>
                                     <label for="customer_email">Email:</label>
                                     <input type="text" class="form-control" name="customer_email" id="customer_email"
-                                        value="<%=info.email%>" disabled>
+                                        value="<%=info.email%>" readonly>
                                     <br>
                                     <label for="customer_phone">Phone Number:</label>
-                                    <input type="number" class="form-control" name="customer_phone" id="customer_phone"
-                                        value="<%=info.phone%>" disabled>
+                                    <input type="text" class="form-control" name="customer_phone" id="customer_phone"
+                                        value="<%=info.phone%>" disabled oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '');">
                                     <br>
                                     <label for="customer_area">Area:</label>
                                     <input type="text" class="form-control" name="customer_area" id="customer_area"
@@ -68,10 +68,11 @@
                                         value="<%=info.town%>" disabled>
                                     <br>
                                 </div>
+                                <button type="submit" class="btn btn-default" id="change-button" disabled>Save Change</button>
                             </form>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-default" id="change-button" disabled>Save Change</button>
+
                     <button type="button" class="btn btn-primary" id="change-info">Change</button>
                 </div>
                 <h1 class="profile-title" style="margin-top: 50px;">My Order</h1>
