@@ -28,11 +28,11 @@
                 </div>
             </div>
             <a href="/customer?user=<%=info.email%>" id="goback">
-            <button type="button" class="btn btn-primary" style="margin-top: 10px; width: 130px">
-                <i class="fas fa-backward" style="color: white"></i>
-                Back Home
-            </button>
-            </a>    
+                <button type="button" class="btn btn-primary" style="margin-top: 10px; width: 130px">
+                    <i class="fas fa-backward" style="color: white"></i>
+                    Back Home
+                </button>
+            </a>
             <div class="my-info">
                 <h1 class="profile-title">My Profile</h1>
                 <div class="container" style="border: 1px solid black; overflow: hidden;">
@@ -45,6 +45,55 @@
                             <img src="../../img/img_avatar.png" alt="avt" class="img-avatar">
                         </div>
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                            <div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#change-password-form" style="float: right; width: 160px; margin-top: 10px;">
+                                Change Password
+                            </button>
+                            <div class="modal fade" id="change-password-form" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="old-password">Password:</label>
+                                            <input type="password" name="old-password" id="old-password" class="form-control" autofocus>
+                                            <div class="fill-this-field">
+                                                Please fill this field!
+                                            </div>
+                                            <div class="warning-message" id="incorrect-password">
+                                                Password incorrect!!
+                                            </div>
+                                            <label for="new-password">New Password:</label>
+                                            <input type="password" name="new-password" id="new-password" class="form-control" placeholder="Enter Your New Password Here">
+                                            <div class="fill-this-field">
+                                                Please fill this field!
+                                            </div>
+                                            <div class="warning-message">
+                                                Both of this have to be exactly the same!!!
+                                            </div>
+                                            <label for="repeat">Enter New Password Again:</label>
+                                            <input type="password" name="repeat" id="repeat" class="form-control" placeholder="Retype new password once more">
+                                            <div class="fill-this-field">
+                                                Please fill this field!
+                                            </div>
+                                            <div class="warning-message">
+                                                Both of this have to be exactly the same!!!
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" id="change-password">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <form class="info-form" method="POST" action="">
                                 <div class="form-inside">
                                     <label for="customer_name">Name:</label>
@@ -57,7 +106,8 @@
                                     <br>
                                     <label for="customer_phone">Phone Number:</label>
                                     <input type="text" class="form-control" name="customer_phone" id="customer_phone"
-                                        value="<%=info.phone%>" disabled oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '');">
+                                        value="<%=info.phone%>" disabled
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '');">
                                     <br>
                                     <label for="customer_area">Area:</label>
                                     <input type="text" class="form-control" name="customer_area" id="customer_area"
@@ -68,7 +118,8 @@
                                         value="<%=info.town%>" disabled>
                                     <br>
                                 </div>
-                                <button type="submit" class="btn btn-default" id="change-button" disabled>Save Change</button>
+                                <button type="submit" class="btn btn-default" id="change-button" disabled>Save
+                                    Change</button>
                             </form>
                         </div>
                     </div>
@@ -87,7 +138,7 @@
                                     <th>Order Date</th>
                                     <th>Delivery Day</th>
                                     <th>Status</th>
-                                  
+
                                 </tr>
                             </thead>
                             <tbody id="order-content">

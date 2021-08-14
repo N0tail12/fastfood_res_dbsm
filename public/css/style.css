@@ -282,6 +282,13 @@ hr {
   margin: 0 auto 10px auto;
   text-align: center;
 }
+.warning-message, .fill-this-field{
+  color: red;
+  font-size: small;
+  display: none;
+}
+
+
 /* Manager style*/
 .sidenav {
   height: 100%;

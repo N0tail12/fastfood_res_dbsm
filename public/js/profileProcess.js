@@ -14,6 +14,7 @@ var changeButton = document.getElementById("change-button");
 changeButton.onclick = () => {};
 var goPageGo = document.getElementById("go-page");
 var data = { email: email, page: page };
+// Fetch Section
 var getAllOrder = async (data) => {
   return await fetch("/getAllOrder", {
     method: "POST",
@@ -32,6 +33,25 @@ var cancelOrder = async (id) => {
     body: JSON.stringify(id),
   }).then((res) => res.json());
 };
+var checkPass = async(info) =>{
+  return await fetch('/checkPassword', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(info),
+  }).then(res => res.json());
+}
+var changePass = async(info) =>{
+  return await fetch('/changePassword', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(info),
+  }).then(res => res.json());
+}
+
 getAllOrder(data).then((res) => {
   for (let index = 0; index < res.order.length; index++) {
     var tr = document.createElement("tr");
@@ -142,5 +162,67 @@ getAllOrder(data).then((res) => {
     number.textContent = "Next";
     previous.appendChild(number);
     goPageGo.appendChild(previous);
+  }
+});
+var changPassButton = document.getElementById("change-password");
+var emptyField = document.getElementsByClassName("fill-this-field");
+changPassButton.addEventListener("click", () => {
+  var oldPass = document.getElementById("old-password");
+  var newPass = document.getElementById("new-password");
+  var repeatPass = document.getElementById("repeat");
+  if (oldPass.value == "" || newPass.value == "" || repeatPass.value == "") {
+    if (oldPass.value == "") {
+      emptyField.item(0).style.display = "block";
+      oldPass.onchange = () => {
+        emptyField.item(0).style.display = "none";
+      }
+    }
+    if (newPass.value == "") {
+      emptyField.item(1).style.display = "block";
+      newPass.onchange = () => {
+        emptyField.item(1).style.display = "none";
+      }
+    }
+    if (repeatPass.value == "") {
+      emptyField.item(2).style.display = "block";
+      repeatPass.onchange = () => {
+        emptyField.item(2).style.display = "none";
+      }
+    }
+  }
+  else{
+    var warningMess = document.getElementsByClassName("warning-message");
+    if(newPass.value !== repeatPass.value){
+      warningMess.item(1).style.display = "block";
+      warningMess.item(2).style.display = "block";
+      newPass.onchange = () => {
+        warningMess.item(1).style.display = "none";
+        warningMess.item(2).style.display = "none";
+      }
+      repeatPass.onchange = () => {
+        warningMess.item(1).style.display = "none";
+        warningMess.item(2).style.display = "none";
+      }
+    }else{
+      var info = {email: email, password: oldPass.value};
+      checkPass(info).then(res => {
+        if(res.result){
+          info.password = newPass.value;
+          changePass(info).then(res => {
+            if(res){
+              window.open('../')
+            }else{
+              console.log("Failed");
+            }       
+          })
+        }
+        else{
+          warningMess.item(0).style.display = "block";
+          oldPass.onchange = () => {
+            warningMess.item(0).style.display = "none";
+          }
+        }
+      })
+    }
   }
 });

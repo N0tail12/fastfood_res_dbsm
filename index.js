@@ -459,6 +459,16 @@ app.post("/getAllOrder", async (req, res) => {
     email +
     "';"
   );
+  function compare(a, b) {
+    if (parseInt(a.order_id) < parseInt(b.order_id)) {
+      return -1;
+    }
+    if (parseInt(a.order_id) > parseInt(b.order_id)) {
+      return 1;
+    }
+    return 0;
+  }
+  rs.rows.sort(compare);
   let limit = 10;
   if (page < 1) page = 1;
   if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
@@ -473,6 +483,27 @@ app.post("/cancelOrder", async (req, res) => {
     let rs = await pool.query("update order_items set status = 'Cancel' where order_id = '"+ id +"'");
     res.json({result: true});
   }catch{
+    res.json({result: false});
+  }
+})
+app.post('/checkPassword', async(req, res) =>{
+  let pass = req.body.password;
+  let email = req.body.email;
+  let rs = await pool.query("select * from customer_info where email = '"+email+"' and pass = '"+pass+"'");
+  console.log(rs.rowCount);
+  if(rs.rowCount)
+    res.json({result: true});
+  else
+    console.log("no body");
+    res.json({result: false});
+})
+app.post('/changePassword', async(req, res) => {
+  let pass = req.body.password;
+  let email = req.body.email;
+  try {
+    let rs = await pool.query("update customer_info set pass = '"+pass+"' where email = '"+email+ "'");
+    res.json({result: true});
+  } catch (error) {
     res.json({result: false});
   }
 })
