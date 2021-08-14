@@ -210,7 +210,7 @@ changPassButton.addEventListener("click", () => {
           info.password = newPass.value;
           changePass(info).then(res => {
             if(res){
-              window.open('../')
+              location.href = '../'
             }else{
               console.log("Failed");
             }       
