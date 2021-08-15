@@ -136,8 +136,17 @@ app.post("/home", async (req, res) => {
 // Manager Functions
 app.get("/manager", async (req, res) => {
   let remember = req.query.user;
-  res.render("manager", { remember: remember });
+  let rs = await pool.query("select * from management where user_id = '" + remember + "'");
+  const info = rs.rows[0];
+  console.log(info);
+  res.render("manager", { remember: remember, info: info });
 });
+app.post('/manager', async (req, res) => {
+  let user_id = req.body.management_id;
+  let user_name = req.body.management_name;
+  let rs = await pool.query("update management set user_name = '" + user_name + "' where user_id = '" + user_id + "'");
+  res.redirect('/manager?user=' + user_id);
+})
 //Customer Information Function
 app.get("/manager/customerinfo", async (req, res) => {
   let rs = await pool.query("Select * from customer_info");
@@ -382,14 +391,24 @@ app.get("/customer/profile", async (req, res) => {
   res.render("myProfile", { info: rs.rows[0] });
   // res.json(rs.rows[0]);
 });
-app.post("/customer/profile", async(req, res) => {
+app.post("/customer/profile", async (req, res) => {
   let email = req.body.customer_email;
   let phoneNumber = req.body.customer_phone;
   let area = req.body.customer_area;
   let town = req.body.customer_town;
-  let rs = await pool.query("update customer_info set phone = '"+phoneNumber+"', area = '"+area+"', town = '"+town+"' where email = '"+email+"'");
+  let rs = await pool.query(
+    "update customer_info set phone = '" +
+    phoneNumber +
+    "', area = '" +
+    area +
+    "', town = '" +
+    town +
+    "' where email = '" +
+    email +
+    "'"
+  );
   res.redirect("/customer/profile?user=" + email + "&page=1");
-})
+});
 //some api
 app.get("/getOrderId", async (req, res) => {
   let rs = await pool.query("select order_id from order_info");
@@ -479,31 +498,76 @@ app.post("/getAllOrder", async (req, res) => {
 });
 app.post("/cancelOrder", async (req, res) => {
   let id = req.body.order_id;
-  try{
-    let rs = await pool.query("update order_items set status = 'Cancel' where order_id = '"+ id +"'");
-    res.json({result: true});
-  }catch{
-    res.json({result: false});
+  try {
+    let rs = await pool.query(
+      "update order_items set status = 'Cancel' where order_id = '" + id + "'"
+    );
+    res.json({ result: true });
+  } catch {
+    res.json({ result: false });
   }
-})
-app.post('/checkPassword', async(req, res) =>{
-  let pass = req.body.password;
-  let email = req.body.email;
-  let rs = await pool.query("select * from customer_info where email = '"+email+"' and pass = '"+pass+"'");
-  console.log(rs.rowCount);
-  if(rs.rowCount)
-    res.json({result: true});
-  else
-    console.log("no body");
-    res.json({result: false});
-})
-app.post('/changePassword', async(req, res) => {
+});
+app.post("/checkCustomerPassword", async (req, res) => {
   let pass = req.body.password;
   let email = req.body.email;
   try {
-    let rs = await pool.query("update customer_info set pass = '"+pass+"' where email = '"+email+ "'");
-    res.json({result: true});
+    let rs = await pool.query(
+      "select * from customer_info where email = '" +
+      email +
+      "' and pass = '" +
+      pass +
+      "'"
+    );
+    console.log(rs.rowCount);
+    if (rs.rowCount) res.json({ result: true });
+    else res.json({ result: false });
   } catch (error) {
-    res.json({result: false});
+    console.log(error);
+  }
+});
+app.post("/changeCustomerPassword", async (req, res) => {
+  let pass = req.body.password;
+  let email = req.body.email;
+  try {
+    let rs = await pool.query(
+      "update customer_info set pass = '" +
+      pass +
+      "' where email = '" +
+      email +
+      "'"
+    );
+    res.json({ result: true });
+  } catch (error) {
+    console.log(error);
+    res.json({ result: false });
+  }
+});
+app.post("/checkManagementPassword", async (req, res) => {
+  console.log(req.body);
+  let pass = req.body.password;
+  let user_id = req.body.user_id;
+  try {
+    let rs = await pool.query(
+      "select * from management where user_id = '" +
+      user_id +
+      "' and pass = '" +
+      pass +
+      "'"
+    );
+    if (rs.rowCount) res.json({ result: true });
+    else res.json({ result: false });
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.post("/changManagementPassword", async (req, res) => {
+  let pass = req.body.password;
+  let user_id = req.body.user_id;
+  try {
+    let rs = await pool.query("update management set pass = '" + pass + "' where user_id = '" + user_id + "'")
+    res.json({ result: true });
+  } catch (error) {
+    console.log(error);
+    res.json({ result: false });
   }
 })

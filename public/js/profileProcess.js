@@ -34,7 +34,7 @@ var cancelOrder = async (id) => {
   }).then((res) => res.json());
 };
 var checkPass = async(info) =>{
-  return await fetch('/checkPassword', {
+  return await fetch('/checkCustomerPassword', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ var checkPass = async(info) =>{
   }).then(res => res.json());
 }
 var changePass = async(info) =>{
-  return await fetch('/changePassword', {
+  return await fetch('/changCustomerPassword', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',

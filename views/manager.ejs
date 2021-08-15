@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <% var message = {type:'success',message:'Login Success'}%>
-    <% var info%>
-    <% var remember%>
+    <% var message = {type:'success',message:'Login Success'}%> <% var info%> <%
+    var remember%>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +13,10 @@
       integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
       crossorigin="anonymous"
     />
-    <script src="https://kit.fontawesome.com/f87c891e2c.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/f87c891e2c.js"
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
@@ -24,13 +26,16 @@
   </head>
 
   <body>
-    
     <div class="sidenav">
       <a href="/manager/sale">SaLing</a>
-      
+
       <a href="/manager/menu?page=1&user=<%=remember%>">Menu</a>
-      <a href="/manager/employeeinfo?page=1&user=<%=remember%>">Employee Infomation</a>
-      <a href="/manager/customerinfo?page=1&user=<%=remember%>">Custumer Infomation</a>
+      <a href="/manager/employeeinfo?page=1&user=<%=remember%>"
+        >Employee Infomation</a
+      >
+      <a href="/manager/customerinfo?page=1&user=<%=remember%>"
+        >Custumer Infomation</a
+      >
       <a href="/manager?user=<%=remember%>">My Infomation</a>
       <a href="/">Logout</a>
     </div>
@@ -53,23 +58,187 @@
         </a>
       </div>
       <% if(message){ %>
-        <div
-          class="alert alert-<%=message.type%> alert-dismissible fade show"
-          role="alert"
-          style="text-align: center"
-        >
-          <strong> <%= message.message%> </strong>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-        <%}%>
+      <div
+        class="alert alert-<%=message.type%> alert-dismissible fade show"
+        role="alert"
+        style="text-align: center"
+      >
+        <strong> <%= message.message%> </strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <%}%>
       <div class="my-info">
-            <img src="../../img/img_avatar.png" alt="avt" class="img-avatar">
-            <div class="img-overplay"></div>
+        <h1 class="profile-title">My Profile</h1>
+        <div
+          class="container"
+          style="border: 1px solid black; overflow: hidden"
+        >
+          <div class="row">
+            <div
+              class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
+              style="
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <img
+                src="../../img/img_avatar.png"
+                alt="avt"
+                class="img-avatar"
+              />
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#change-password-form"
+                  style="float: right; width: 160px; margin-top: 10px"
+                >
+                  Change Password
+                </button>
+                <div
+                  class="modal fade"
+                  id="change-password-form"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Change Password
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="old-password">Password:</label>
+                        <input
+                          type="password"
+                          name="old-password"
+                          id="old-password"
+                          class="form-control"
+                          autofocus
+                        />
+                        <div class="fill-this-field">
+                          Please fill this field!
+                        </div>
+                        <div class="warning-message" id="incorrect-password">
+                          Password incorrect!!
+                        </div>
+                        <label for="new-password">New Password:</label>
+                        <input
+                          type="password"
+                          name="new-password"
+                          id="new-password"
+                          class="form-control"
+                          placeholder="Enter Your New Password Here"
+                        />
+                        <div class="fill-this-field">
+                          Please fill this field!
+                        </div>
+                        <div class="warning-message">
+                          Both of this have to be exactly the same!!!
+                        </div>
+                        <label for="repeat">Enter New Password Again:</label>
+                        <input
+                          type="password"
+                          name="repeat"
+                          id="repeat"
+                          class="form-control"
+                          placeholder="Retype new password once more"
+                        />
+                        <div class="fill-this-field">
+                          Please fill this field!
+                        </div>
+                        <div class="warning-message">
+                          Both of this have to be exactly the same!!!
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          id="change-password"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form class="info-form" method="POST" action="">
+                <div class="form-inside">
+                  <label for="management_id">Id:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="management_id"
+                    id="management_id"
+                    value="<%=info.user_id%>"
+                    readonly
+                  />
+                  <br />
+                  <label for="management_name">Name:</label>
+                  <input
+                    type="text"
+                    name="management_name"
+                    id="management_name"
+                    value="<%=info.user_name%>"
+                    class="form-control"
+                    disabled
+                  />
+                  <br />
+                  <label for="designation">Designation:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="designation"
+                    id="designation"
+                    value="<%=info.designation%>"
+                    readonly
+                  />
+                  <br />
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-default"
+                  id="change-button"
+                  disabled
+                >
+                  Save Change
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="change-info">
+            Change
+          </button>
+        </div>
       </div>
       <footer class="bg-dark text-center text-white">
         <div class="container p-4 pb-0">
@@ -81,7 +250,7 @@
               role="button"
               ><i class="fab fa-facebook-f"></i
             ></a>
-  
+
             <a
               class="btn btn-outline-light btn-floating m-1"
               href="https://twitter.com/NguynMi15952450"
@@ -89,7 +258,7 @@
               role="button"
               ><i class="fab fa-twitter"></i
             ></a>
-  
+
             <a
               class="btn btn-outline-light btn-floating m-1"
               href="https://mail.google.com/mail/u/0/#inbox"
@@ -97,7 +266,7 @@
               target="_blank"
               ><i class="fab fa-google"></i
             ></a>
-  
+
             <a
               class="btn btn-outline-light btn-floating m-1"
               href="https://github.com/N0tail12"
@@ -107,8 +276,11 @@
             ></a>
           </section>
         </div>
-  
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+
+        <div
+          class="text-center p-3"
+          style="background-color: rgba(0, 0, 0, 0.2)"
+        >
           © 2021 Copyright:
           <a
             class="text-white"
@@ -120,6 +292,6 @@
         <!-- Copyright -->
       </footer>
     </div>
-    
+    <script src="/js/managementProcess.js"></script>
   </body>
 </html>
