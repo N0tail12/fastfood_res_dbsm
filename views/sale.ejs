@@ -19,12 +19,12 @@
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
       crossorigin="anonymous"
     ></script>
-    <title>Customer Information</title>
+    <title>Sale Info</title>
   </head>
 
   <body>
     <div class="sidenav">
-      <a href="/manager/sale">SaLing</a>
+      <a href="/manager/sale?page=1&user=<%=remember%>">SaLing</a>
       <a href="/manager/menu?page=1&user=<%=remember%>">Menu</a>
       <a href="/manager/employeeinfo?page=1&user=<%=remember%>">Employee Infomation</a>
       <a href="/manager/customerinfo?page=1&user=<%=remember%>">Custumer Infomation</a>
@@ -51,110 +51,51 @@
       </div>
       <div class="info-content">
         <h1 style="width: 400px; margin: 0 auto 10px auto; text-align: center">
-          Customer Infomation
+          Sale Information
         </h1>
-        <div class="dropdown" style="float: right">
-          <a
-            class="btn btn-secondary dropdown-toggle"
-            style="width: auto"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Option
-          </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li>
-              <a class="dropdown-item" href="/manager/customerinfo?page=1&user=<%=remember%>"
-                >All Customer</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/manager/customerinfo/top10?page=1&user=<%=remember%>"
-                >Top 10 with the most order</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="/manager/customerinfo/familiar?page=1&user=<%=remember%>"
-                >Familiar Customer</a
-              >
-            </li>
-          </ul>
-        </div>
+        
+        <div class="container">
+        
+        <div class="row">
+          <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <label for="date-start">Day start:</label>
+            <input type="date" name="date-start" id="date-start">
+            <div class="fill-this-field">
+              Please fill this field!
+            </div>
+          </div>
+          
+          <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <label for="date-end">Day end:</label>
+            <input type="date" name="date-end" id="date-end"> 
+            <div class="fill-this-field">
+              Please fill this field!
+            </div>
+            <div class="fill-this-field">
+              Day End must bigger than Day Start!!
+            </div>
+          </div>
+          
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button type="button" class="btn btn-success" id="show-data">Show</button>
+          </div>         
+        </div>       
+        </div>      
         <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">STT</th>
-              <th scope="col">Email</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Area</th>
-              <th scope="col">Town</th>
+              <th scope="col">Date</th>
+              <th scope="col">Total</th>
             </tr>
           </thead>
           <tbody id="print">
-            <%info.forEach(function(cus){%>
-            <tr>
-              <th><%=number%></th>
-              <th scope="row"><%=cus.email%></th>
-              <td><%=cus.fname%></td>
-              <td><%=cus.lname%></td>
-              <td><%=cus.phone%></td>
-              <td><%=cus.area%></td>
-              <td><%=cus.town%></td>
-            </tr>
-            <% number +=1%> <% }); %>
+            
           </tbody>
         </table>
       </div>
       <nav aria-label="Page navigation example" style="text-align: center">
-        <ul class="pagination">
-          <% if (page> 1){%>
-          <li class="page-item">
-            <a
-              class="page-link"
-              href="/manager/customerinfo?page=<%=parseInt(page)-1%>&user=<%=remember%>"
-              >Previous</a
-            >
-          </li>
-          <% } %> <% if (page==1) {%>
-          <li class="page-item"><a class="page-link">Previous</a></li>
-          <%}%> <%for(var i=1; i< Math.ceil(numberpage) + 1; ++i){%>
-          <%if(i==page){%>
-          <li class="page-item active">
-            <a
-              class="page-link"
-              href="/manager/customerinfo?page=<%=parseInt(i)%>&user=<%=remember%>"
-            >
-              <%=i%>
-            </a>
-          </li>
-          <%} else{%>
-          <li class="page-item">
-            <a
-              class="page-link"
-              href="/manager/customerinfo?page=<%=parseInt(i)%>&user=<%=remember%>"
-            >
-              <%=i%>
-            </a>
-          </li>
-          <%}%> <%}%> <% if (page <=(numberpage)){%>
-          <li class="page-item">
-            <a
-              class="page-link"
-              href="/manager/customerinfo?page=<%=parseInt(page) +1%>&user=<%=remember%>"
-              >Next</a
-            >
-          </li>
-          <% } %> <% if (page> (numberpage)){%>
-          <li class="page-item"><a class="page-link">Next</a></li>
-          <% } %>
+        <ul class="pagination" id="go-page">
+         
         </ul>
       </nav>
       <footer class="bg-dark text-center text-white">
@@ -206,5 +147,6 @@
         <!-- Copyright -->
       </footer>
     </div>
+    <script src="/js/saleProcess.js"></script>
   </body>
 </html>

@@ -27,6 +27,7 @@ app.use(flash());
 app.use(cookieParser("secretString"));
 
 const { Pool } = require("pg");
+const { render } = require("ejs");
 const connectionString =
   "postgres://ijgbgbrz:UXX0MoGyaIw8cXPmUdHI5aWas3HHP5Oy@queenie.db.elephantsql.com:5432/ijgbgbrz";
 const pool = new Pool({
@@ -54,20 +55,20 @@ app.post("/", async (req, res) => {
   try {
     let rs = await pool.query(
       "INSERT INTO customer_info VALUES ('" +
-      email +
-      "','" +
-      fname +
-      "','" +
-      lnane +
-      "','" +
-      pass +
-      "','" +
-      pnumber +
-      "','" +
-      area +
-      "','" +
-      town +
-      "','Active');"
+        email +
+        "','" +
+        fname +
+        "','" +
+        lnane +
+        "','" +
+        pass +
+        "','" +
+        pnumber +
+        "','" +
+        area +
+        "','" +
+        town +
+        "','Active');"
     );
     req.flash("message", "Signup Success");
     req.flash("type", "success");
@@ -92,20 +93,20 @@ app.post("/home", async (req, res) => {
   try {
     let rs = await pool.query(
       "Select * from customer_info where email = '" +
-      user +
-      "' and pass = '" +
-      pass +
-      "' and status = 'Active'"
+        user +
+        "' and pass = '" +
+        pass +
+        "' and status = 'Active'"
     );
     if (rs.rowCount > 0) {
       res.redirect("/customer?user=" + user);
     } else {
       rs = await pool.query(
         "Select * from management where user_id = '" +
-        user +
-        "' and pass = '" +
-        pass +
-        "' and status = 'Actv'"
+          user +
+          "' and pass = '" +
+          pass +
+          "' and status = 'Actv'"
       );
       if (rs.rows[0].designation == "Manager") {
         res.redirect("/manager?user=" + user);
@@ -113,12 +114,7 @@ app.post("/home", async (req, res) => {
         rs.rows[0].designation == "Employee" ||
         rs.rows[0].designation == "Cook"
       ) {
-        req.flash("message", "Login Success");
-        req.flash("type", "success");
-        res.render("employee", {
-          message: req.flash("message"),
-          type: req.flash("type"),
-        });
+        res.redirect("/employee?user=" + user);
       }
     }
     req.session.isAuth = true;
@@ -136,17 +132,25 @@ app.post("/home", async (req, res) => {
 // Manager Functions
 app.get("/manager", async (req, res) => {
   let remember = req.query.user;
-  let rs = await pool.query("select * from management where user_id = '" + remember + "'");
+  let rs = await pool.query(
+    "select * from management where user_id = '" + remember + "'"
+  );
   const info = rs.rows[0];
   console.log(info);
   res.render("manager", { remember: remember, info: info });
 });
-app.post('/manager', async (req, res) => {
+app.post("/manager", async (req, res) => {
   let user_id = req.body.management_id;
   let user_name = req.body.management_name;
-  let rs = await pool.query("update management set user_name = '" + user_name + "' where user_id = '" + user_id + "'");
-  res.redirect('/manager?user=' + user_id);
-})
+  let rs = await pool.query(
+    "update management set user_name = '" +
+      user_name +
+      "' where user_id = '" +
+      user_id +
+      "'"
+  );
+  res.redirect("/manager?user=" + user_id);
+});
 //Customer Information Function
 app.get("/manager/customerinfo", async (req, res) => {
   let rs = await pool.query("Select * from customer_info");
@@ -243,14 +247,14 @@ app.post("/addemployee", async (req, res) => {
   try {
     let rs = await pool.query(
       "INSERT INTO management VALUES ('" +
-      username +
-      "','" +
-      pass +
-      "','" +
-      name +
-      "','Actv','" +
-      design +
-      "');"
+        username +
+        "','" +
+        pass +
+        "','" +
+        name +
+        "','Actv','" +
+        design +
+        "');"
     );
     res.redirect("/manager/employeeinfo?page=1&user=" + remember);
   } catch (error) {
@@ -265,12 +269,12 @@ app.post("/changeemployee", async (req, res) => {
   let remember = req.body.hidden;
   let rs = await pool.query(
     "update management set user_name = '" +
-    name +
-    "', designation ='" +
-    design +
-    "' where user_id='" +
-    userid +
-    "'"
+      name +
+      "', designation ='" +
+      design +
+      "' where user_id='" +
+      userid +
+      "'"
   );
   res.redirect("/manager/employeeinfo?page=1&user=" + remember);
 });
@@ -322,14 +326,14 @@ app.post("/addmenu", async (req, res) => {
   try {
     let rs = await pool.query(
       "INSERT INTO menu VALUES ('" +
-      id +
-      "','" +
-      name +
-      "',' ','" +
-      price +
-      "','" +
-      category +
-      "','Available','mhieu345');"
+        id +
+        "','" +
+        name +
+        "',' ','" +
+        price +
+        "','" +
+        category +
+        "','Available','mhieu345');"
     );
     res.redirect("/manager/menu?page=1&user=" + remember);
   } catch (error) {
@@ -352,22 +356,45 @@ app.post("/changemenu", async (req, res) => {
   let remember = req.body.hidden;
   let rs = await pool.query(
     "update menu set item_name = '" +
-    name +
-    "', price = '" +
-    price +
-    "', catagory = '" +
-    category +
-    "', status = '" +
-    status +
-    "' where item_id = '" +
-    id +
-    "'"
+      name +
+      "', price = '" +
+      price +
+      "', catagory = '" +
+      category +
+      "', status = '" +
+      status +
+      "' where item_id = '" +
+      id +
+      "'"
   );
   res.redirect("/manager/menu?page=1&user=" + remember);
 });
 
 //Sale Function
-
+app.get("/manager/sale", async (req, res) => {
+  res.render("sale", { remember: req.query.user });
+});
+app.post("/manager/sale", async (req, res) => {
+  let page = req.body.page;
+  let dateStart = req.body.dateStart;
+  let dateEnd = req.body.dateEnd;
+  let rs = await pool.query(
+    "select oi.todel, sum(me.price * ot.quantity) as total\
+    from menu as me, order_items  as ot, order_info as oi\
+    where me.item_id = ot.item_id and ot.order_id = oi.order_id\
+    and todel between '"+dateStart+"' and '"+dateEnd+"' and ot.status != 'Cancel'\
+    group by(todel)\
+    order by(todel)"
+  );
+  let limit = 20;
+  if (page < 1) page = 1;
+  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  console.log(info);
+  res.json({ sale: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+});
 // Customer Function
 app.get("/customer", async (req, res) => {
   let rs = await pool.query("select * from menu");
@@ -398,14 +425,14 @@ app.post("/customer/profile", async (req, res) => {
   let town = req.body.customer_town;
   let rs = await pool.query(
     "update customer_info set phone = '" +
-    phoneNumber +
-    "', area = '" +
-    area +
-    "', town = '" +
-    town +
-    "' where email = '" +
-    email +
-    "'"
+      phoneNumber +
+      "', area = '" +
+      area +
+      "', town = '" +
+      town +
+      "' where email = '" +
+      email +
+      "'"
   );
   res.redirect("/customer/profile?user=" + email + "&page=1");
 });
@@ -439,25 +466,25 @@ app.post("/rainbow", async (req, res) => {
     );
     let insertInfo = await pool.query(
       "insert into order_info values('" +
-      req.body.order_id +
-      "','" +
-      req.body.user_id +
-      "','" +
-      req.body.torcv +
-      "','" +
-      req.body.todel +
-      "')"
+        req.body.order_id +
+        "','" +
+        req.body.user_id +
+        "','" +
+        req.body.torcv +
+        "','" +
+        req.body.todel +
+        "')"
     );
     let insertItems = await pool.query(
       "insert into order_items values('" +
-      req.body.order_id +
-      "','" +
-      req.body.item_id +
-      "','" +
-      req.body.quantity +
-      "', 'Pending', '" +
-      getCooker.rows[0].user_id +
-      "')"
+        req.body.order_id +
+        "','" +
+        req.body.item_id +
+        "','" +
+        req.body.quantity +
+        "', 'Pending', '" +
+        getCooker.rows[0].user_id +
+        "')"
     );
     console.log(getCooker.rows[0].user_id);
     res.json({ result: true });
@@ -475,8 +502,8 @@ app.post("/getAllOrder", async (req, res) => {
     ot.status as status from order_info oi,\
     order_items ot, menu n\
     where oi.order_id = ot.order_id and ot.item_id = n.item_id and email = '" +
-    email +
-    "';"
+      email +
+      "';"
   );
   function compare(a, b) {
     if (parseInt(a.order_id) < parseInt(b.order_id)) {
@@ -513,10 +540,10 @@ app.post("/checkCustomerPassword", async (req, res) => {
   try {
     let rs = await pool.query(
       "select * from customer_info where email = '" +
-      email +
-      "' and pass = '" +
-      pass +
-      "'"
+        email +
+        "' and pass = '" +
+        pass +
+        "'"
     );
     console.log(rs.rowCount);
     if (rs.rowCount) res.json({ result: true });
@@ -531,10 +558,10 @@ app.post("/changeCustomerPassword", async (req, res) => {
   try {
     let rs = await pool.query(
       "update customer_info set pass = '" +
-      pass +
-      "' where email = '" +
-      email +
-      "'"
+        pass +
+        "' where email = '" +
+        email +
+        "'"
     );
     res.json({ result: true });
   } catch (error) {
@@ -549,10 +576,10 @@ app.post("/checkManagementPassword", async (req, res) => {
   try {
     let rs = await pool.query(
       "select * from management where user_id = '" +
-      user_id +
-      "' and pass = '" +
-      pass +
-      "'"
+        user_id +
+        "' and pass = '" +
+        pass +
+        "'"
     );
     if (rs.rowCount) res.json({ result: true });
     else res.json({ result: false });
@@ -564,10 +591,16 @@ app.post("/changManagementPassword", async (req, res) => {
   let pass = req.body.password;
   let user_id = req.body.user_id;
   try {
-    let rs = await pool.query("update management set pass = '" + pass + "' where user_id = '" + user_id + "'")
+    let rs = await pool.query(
+      "update management set pass = '" +
+        pass +
+        "' where user_id = '" +
+        user_id +
+        "'"
+    );
     res.json({ result: true });
   } catch (error) {
     console.log(error);
     res.json({ result: false });
   }
-})
+});
