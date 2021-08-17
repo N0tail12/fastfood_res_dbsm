@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% var remember, designation%>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/f87c891e2c.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+    <title>Employee</title>
+  </head>
+  <body>
+    <div class="employee-info">
+      <div
+        class="title_taskbar row"
+        style="
+          width: 100%;
+          height: 100px;
+          background-color: black;
+          margin: auto;
+          font-size: 33px;
+        "
+      >
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+          <button
+            class="navbar-show-button"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample"
+          >
+            <i class="fas fa-bars" style="color: white"></i>
+          </button>
+        </div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+          <div style="text-align: center">
+            <img src="../../img/JOEY2.png" class="rounded" alt="JR" />
+          </div>
+        </div>
+      </div>
+      <div class="pos-f-t">
+        <div
+          class="offcanvas offcanvas-start"
+          tabindex="-1"
+          id="offcanvasExample"
+          aria-labelledby="offcanvasExampleLabel"
+          style="background-color: black"
+        >
+          <div class="offcanvas-header" style="color: white">
+            <h1>Menu</h1>
+          </div>
+          <div class="offcanvas-body" style="color: white">
+            <a href="/employee?user=<%=remember%>&designation=<%=designation%>">My ProFile</a>
+            <a href="/employee/order?user=<%=remember%>&page=1&designation=<%=designation%>">Order</a>
+          </div>
+        </div>
+      </div>
+      <div class="my-info">
+        <h1 class="profile-title">Order</h1>
+        <div class="container">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Email</th>
+                  <th>Item ID</th>
+                  <th>Quantity</th>
+                  <th>Order Date</th>
+                  <th>Delivery Day</th>
+                  <th>Status</th>
+                  <th>Cooker</th>
+                  <th>Option</th>
+                </tr>
+              </thead>
+              <tbody id="order-content"></tbody>
+            </table>
+          </div>
+          <nav
+            aria-label="Page navigation example"
+            style="text-align: center; padding-bottom: 6px"
+          >
+            <ul class="pagination" id="go-page"></ul>
+          </nav>
+        </div>
+      </div>
+      <footer class="bg-dark text-center text-white">
+        <div class="container p-4 pb-0">
+          <section class="mb-4">
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://www.facebook.com/whit3sh4dow/"
+              target="_blank"
+              role="button"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://twitter.com/NguynMi15952450"
+              target="_blank"
+              role="button"
+              ><i class="fab fa-twitter"></i
+            ></a>
+
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://mail.google.com/mail/u/0/#inbox"
+              role="button"
+              target="_blank"
+              ><i class="fab fa-google"></i
+            ></a>
+
+            <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://github.com/N0tail12"
+              role="button"
+              target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+          </section>
+        </div>
+
+        <div
+          class="text-center p-3"
+          style="background-color: rgba(0, 0, 0, 0.2)"
+        >
+          © 2021 Copyright:
+          <a
+            class="text-white"
+            href="https://www.facebook.com/whit3sh4dow/"
+            target="_blank"
+            >N0tail12</a
+          >
+        </div>
+        <!-- Copyright -->
+      </footer>
+    </div>
+    <script src="/js/getSomeOrder.js"></script>
+  </body>
+</html>

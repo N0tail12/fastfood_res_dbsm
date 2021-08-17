@@ -99,7 +99,7 @@ label {
   display: table;
 }
 /*Customer Style*/
-.customer_info{
+.customer_info {
   background-image: url(/img/background.jpg);
 }
 .nav-link {
@@ -194,7 +194,7 @@ hr {
 .hidden {
   display: none;
 }
-.cart{
+.cart {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -209,37 +209,38 @@ hr {
   border-bottom: solid 2px #b5b5b5;
   border-radius: 50%;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    0 2px 2px rgba(0, 0, 0, 0.19);
 }
-#oke-alert{
+#oke-alert {
   position: fixed;
   left: 50%;
   top: 10%;
   transform: translateX(-50%);
   z-index: 1030;
 }
-#quantity{
+#quantity {
   margin-left: 10px;
   margin-right: 10px;
 }
-#order_time{
+#order_time {
   width: 110px;
   margin-right: 5px;
 }
 @keyframes fadeOut {
   from {
-  	opacity: 1;
+    opacity: 1;
   }
   to {
- 	opacity: 0;
-  display: none;
+    opacity: 0;
+    display: none;
   }
 }
-#quantity{
+#quantity {
   width: 30%;
   /* height: 30px; */
 }
-#about-us{
+#about-us {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -260,34 +261,36 @@ hr {
 #customer_phone{
   margin-left: 30px;
 } */
-#change-info, #change-button{
+#change-info,
+#change-button {
   float: right;
 }
-#change-button{
+#change-button {
   background-color: #dee2e6;
   margin-left: 20px;
 }
-.info-form{
+.info-form {
   padding: 4.5rem;
   width: 60%;
   margin: 4.5rem auto 50px auto;
   background-color: white;
   border: 1px solid rgb(187, 172, 172);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    0 2px 2px rgba(0, 0, 0, 0.19);
 }
-.profile-title{
+.profile-title {
   font-family: "Playball", cursive;
   font-size: 50px;
   width: 400px;
   margin: 0 auto 10px auto;
   text-align: center;
 }
-.warning-message, .fill-this-field{
+.warning-message,
+.fill-this-field {
   color: red;
   font-size: small;
   display: none;
 }
-
 
 /* Manager style*/
 .sidenav {
@@ -333,15 +336,35 @@ hr {
   padding: 10px 20px 20px 20px;
   min-height: 100vh;
 }
-.my-info{
-  background-color:white;
+.my-info {
+  background-color: white;
   width: 80%;
   margin: 50px auto 100px auto;
   min-height: 100vh;
 }
-.img-avatar{
+.img-avatar {
   margin-left: 30px;
   max-width: 250px;
   max-height: 249px;
 }
 
+/*Employee Style*/
+.employee-info {
+  background-image: url(/img/background.jpg);
+}
+.navbar-show-button {
+  background-color: transparent;
+  border: 1.5px solid rgba(255, 249, 249, 0.589);
+  border-radius: 10%;
+  margin-top: 15px;
+}
+.offcanvas-body a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+.offcanvas-body a:hover{
+  color: white;
+}

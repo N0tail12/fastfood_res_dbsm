@@ -114,7 +114,9 @@ app.post("/home", async (req, res) => {
         rs.rows[0].designation == "Employee" ||
         rs.rows[0].designation == "Cook"
       ) {
-        res.redirect("/employee?user=" + user);
+        res.redirect(
+          "/employee?user=" + user + "&designation=" + rs.rows[0].designation
+        );
       }
     }
     req.session.isAuth = true;
@@ -382,18 +384,23 @@ app.post("/manager/sale", async (req, res) => {
     "select oi.todel, sum(me.price * ot.quantity) as total\
     from menu as me, order_items  as ot, order_info as oi\
     where me.item_id = ot.item_id and ot.order_id = oi.order_id\
-    and todel between '"+dateStart+"' and '"+dateEnd+"' and ot.status != 'Cancel'\
+    and todel between '" +
+      dateStart +
+      "' and '" +
+      dateEnd +
+      "' and ot.status != 'Cancel'\
     group by(todel)\
     order by(todel)"
   );
-  let limit = 20;
-  if (page < 1) page = 1;
-  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const info = rs.rows.slice(startIndex, endIndex);
-  console.log(info);
-  res.json({ sale: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+  // let limit = 20;
+  // if (page < 1) page = 1;
+  // if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+  // const startIndex = (page - 1) * limit;
+  // const endIndex = page * limit;
+  // const info = rs.rows.slice(startIndex, endIndex);
+  // console.log(info);
+  const info = rs.rows;
+  res.json({ sale: info });
 });
 // Customer Function
 app.get("/customer", async (req, res) => {
@@ -435,6 +442,40 @@ app.post("/customer/profile", async (req, res) => {
       "'"
   );
   res.redirect("/customer/profile?user=" + email + "&page=1");
+});
+//Employee Function
+app.get("/employee", async (req, res) => {
+  let user = req.query.user;
+  try {
+    let rs = await pool.query(
+      "select * from management where user_id = '" + user + "'"
+    );
+    console.log(rs.rows[0]);
+    res.render("employee", { info: rs.rows[0] });
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.post("/employee", async (req, res) => {
+  let user_id = req.body.management_id;
+  let user_name = req.body.management_name;
+  try {
+    let rs = await pool.query(
+      "update management set user_name = '" +
+        user_name +
+        "' where user_id = '" +
+        user_id +
+        "'"
+    );
+    res.redirect("/employee?user=" + user_id);
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/employee/order", (req, res) => {
+  let remember = req.query.user;
+  let designation = req.query.designation;
+  res.render("order", { remember: remember, designation: designation });
 });
 //some api
 app.get("/getOrderId", async (req, res) => {
@@ -604,3 +645,54 @@ app.post("/changManagementPassword", async (req, res) => {
     res.json({ result: false });
   }
 });
+app.post("/employeeOrder", async (req, res) => {
+  let page = req.body.page;
+  try {
+    let rs = await pool.query(
+      "select order_info.order_id, email, item_id, quantity, status, user_id, torcv, todel\
+      from order_info, order_items \
+      where order_info.order_id = order_items.order_id and order_items.status = 'Ready'"
+    );
+  let limit = 25;
+  if (page < 1) page = 1;
+  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  console.log(info);
+  res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.post("/cookerOrder", async (req, res) => {
+  let page = req.body.page;
+  let user = req.body.user_id;
+  try {
+    let rs = await pool.query(
+      "select order_info.order_id, email, item_id, quantity, status, user_id, torcv, todel\
+      from order_info, order_items \
+      where order_info.order_id = order_items.order_id and user_id = '"+user+"'"
+    );
+  let limit = 25;
+  if (page < 1) page = 1;
+  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const info = rs.rows.slice(startIndex, endIndex);
+  console.log(info);
+  res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.post("/complete", async (req, res) => {
+  let id = req.body.order_id;
+  try {
+    let rs = await pool.query("update order_items set status = 'Ready' where order_id = '"+id+"'");
+    res.json({result: true});
+  } catch (error) {
+    console.log(error);
+    res.json({result: false});
+  }
+})

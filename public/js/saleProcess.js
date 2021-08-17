@@ -56,65 +56,65 @@ showData.onclick = () => {
                     tr.appendChild(money);
                     content.appendChild(tr);
                 }
-                if (page > 1) {
-                    var previous = document.createElement("li");
-                    previous.className = "page-item";
-                    var number = document.createElement("a");
-                    number.className = "page-link";
-                    number.href = "/manager/sale?page=" + (page - 1) + "&user=" + user ;
-                    number.textContent = "Previous";
-                    previous.appendChild(number);
-                    goPageGo.appendChild(previous);
-                  }
-                  if (page == 1) {
-                    var previous = document.createElement("li");
-                    previous.className = "page-item";
-                    var number = document.createElement("a");
-                    number.className = "page-link";
-                    number.textContent = "Previous";
-                    previous.appendChild(number);
-                    goPageGo.appendChild(previous);
-                  }
-                  for (let index = 1; index <= res.pageNumber; ++index) {
-                    if (index == page) {
-                      var previous = document.createElement("li");
-                      previous.className = "page-item active";
-                      var number = document.createElement("a");
-                      number.className = "page-link";
-                      number.href = "/manager/sale?page=" + index + "&user=" + user ;
-                      number.textContent = index;
-                      previous.appendChild(number);
-                      goPageGo.appendChild(previous);
-                    } else {
-                      var previous = document.createElement("li");
-                      previous.className = "page-item";
-                      var number = document.createElement("a");
-                      number.className = "page-link";
-                      number.href = "/manager/sale?page=" + index + "&user=" + user ;
-                      number.textContent = index;
-                      previous.appendChild(number);
-                      goPageGo.appendChild(previous);
-                    }
-                  }
-                  if (page < res.pageNumber) {
-                    var previous = document.createElement("li");
-                    previous.className = "page-item";
-                    var number = document.createElement("a");
-                    number.className = "page-link";
-                    number.href = "/manager/sale?page=" + (page + 1) + "&user=" + user ;
-                    number.textContent = "Next";
-                    previous.appendChild(number);
-                    goPageGo.appendChild(previous);
-                  }
-                  if (page == res.pageNumber) {
-                    var previous = document.createElement("li");
-                    previous.className = "page-item";
-                    var number = document.createElement("a");
-                    number.className = "page-link";
-                    number.textContent = "Next";
-                    previous.appendChild(number);
-                    goPageGo.appendChild(previous);
-                  }
+                // if (page > 1) {
+                //     var previous = document.createElement("li");
+                //     previous.className = "page-item";
+                //     var number = document.createElement("a");
+                //     number.className = "page-link";
+                //     number.href = "/manager/sale?page=" + (page - 1) + "&user=" + user ;
+                //     number.textContent = "Previous";
+                //     previous.appendChild(number);
+                //     goPageGo.appendChild(previous);
+                //   }
+                //   if (page == 1) {
+                //     var previous = document.createElement("li");
+                //     previous.className = "page-item";
+                //     var number = document.createElement("a");
+                //     number.className = "page-link";
+                //     number.textContent = "Previous";
+                //     previous.appendChild(number);
+                //     goPageGo.appendChild(previous);
+                //   }
+                //   for (let index = 1; index <= res.pageNumber; ++index) {
+                //     if (index == page) {
+                //       var previous = document.createElement("li");
+                //       previous.className = "page-item active";
+                //       var number = document.createElement("a");
+                //       number.className = "page-link";
+                //       number.href = "/manager/sale?page=" + index + "&user=" + user ;
+                //       number.textContent = index;
+                //       previous.appendChild(number);
+                //       goPageGo.appendChild(previous);
+                //     } else {
+                //       var previous = document.createElement("li");
+                //       previous.className = "page-item";
+                //       var number = document.createElement("a");
+                //       number.className = "page-link";
+                //       number.href = "/manager/sale?page=" + index + "&user=" + user ;
+                //       number.textContent = index;
+                //       previous.appendChild(number);
+                //       goPageGo.appendChild(previous);
+                //     }
+                //   }
+                //   if (page < res.pageNumber) {
+                //     var previous = document.createElement("li");
+                //     previous.className = "page-item";
+                //     var number = document.createElement("a");
+                //     number.className = "page-link";
+                //     number.href = "/manager/sale?page=" + (page + 1) + "&user=" + user ;
+                //     number.textContent = "Next";
+                //     previous.appendChild(number);
+                //     goPageGo.appendChild(previous);
+                //   }
+                //   if (page == res.pageNumber) {
+                //     var previous = document.createElement("li");
+                //     previous.className = "page-item";
+                //     var number = document.createElement("a");
+                //     number.className = "page-link";
+                //     number.textContent = "Next";
+                //     previous.appendChild(number);
+                //     goPageGo.appendChild(previous);
+                //   }
             })
         }
     }
