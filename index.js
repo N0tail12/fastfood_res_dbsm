@@ -1,19 +1,14 @@
 var express = require("express");
-//var bodyParser = require("body-parser");
 var session = require("express-session");
 var flash = require("connect-flash");
+var multer = require("multer");
 var app = express();
 var cookieParser = require("cookie-parser");
-// var pgdbsession = require('connect-pg-simple')(session);
+let path = require("path");
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/css", express.static(__dirname + "/lib/bootstrap/css"));
 app.use("/js", express.static(__dirname + "/lib/bootstrap/js"));
-// app.use('/JOEY2.png', express.static(__dirname + '/views/JOEY2.png'));
-// app.use('/hamburger.jpg', express.static(__dirname + '/views/hamburger.jpg'));
-// app.use('/pizza.jpg', express.static(__dirname + '/views/pizza.jpg'));
-// app.use('/background.jpg', express.static(__dirname + '/views/background.jpg'));
-//app.use('/style.css', express.static(__dirname + '/public/css/style.css'));
 app.use("/views", express.static(__dirname + "/views"));
 app.use("/img", express.static(__dirname + "/public/img"));
 app.use("/css", express.static(__dirname + "/public/css"));
@@ -38,6 +33,23 @@ app.use(
     cookie: { maxAge: 60000 },
   })
 );
+
+let diskStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "public/img");
+  },
+  filename: (req, file, callback) => {
+    let math = ["image/png", "image/jpeg"];
+    if (math.indexOf(file.mimetype) === -1) {
+      let errorMess = `The file <strong>${file.originalname}</strong> is invalid. Only allowed to upload image jpeg or png.`;
+      return callback(errorMess, null);
+    }
+    let filename = `${file.originalname}`;
+    callback(null, filename);
+  },
+});
+
+let uploadFile = multer({ storage: diskStorage });
 
 //Main
 app.get("/", function (req, res) {
@@ -293,6 +305,7 @@ app.get("/manager/deleteemployee", async (req, res) => {
 
 app.get("/manager/menu", async (req, res) => {
   let rs = await pool.query("select * from menu");
+
   function compare(a, b) {
     if (parseInt(a.item_id) < parseInt(b.item_id)) {
       return -1;
@@ -303,6 +316,7 @@ app.get("/manager/menu", async (req, res) => {
     return 0;
   }
   rs.rows.sort(compare);
+  console.log(rs.rows);
   let page = req.query.page;
   let remember = req.query.user;
   let limit = 20;
@@ -319,19 +333,24 @@ app.get("/manager/menu", async (req, res) => {
   });
 });
 
-app.post("/addmenu", async (req, res) => {
+app.post("/addmenu", uploadFile.single("chpic"), async (req, res) => {
   let id = req.body.menuid;
   let name = req.body.menuname;
   let price = req.body.menuprice;
   let category = req.body.category;
   let remember = req.body.hidden;
+  let dir = "img/" + req.file.filename;
+  console.log(dir);
+  console.log(req.body, req.file);
   try {
     let rs = await pool.query(
       "INSERT INTO menu VALUES ('" +
         id +
         "','" +
         name +
-        "',' ','" +
+        "','" +
+        dir +
+        "','" +
         price +
         "','" +
         category +
@@ -653,14 +672,14 @@ app.post("/employeeOrder", async (req, res) => {
       from order_info, order_items \
       where order_info.order_id = order_items.order_id and order_items.status = 'Ready'"
     );
-  let limit = 25;
-  if (page < 1) page = 1;
-  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const info = rs.rows.slice(startIndex, endIndex);
-  console.log(info);
-  res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+    let limit = 25;
+    if (page < 1) page = 1;
+    if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const info = rs.rows.slice(startIndex, endIndex);
+    console.log(info);
+    res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
   } catch (error) {
     console.log(error);
   }
@@ -672,16 +691,18 @@ app.post("/cookerOrder", async (req, res) => {
     let rs = await pool.query(
       "select order_info.order_id, email, item_id, quantity, status, user_id, torcv, todel\
       from order_info, order_items \
-      where order_info.order_id = order_items.order_id and user_id = '"+user+"'"
+      where order_info.order_id = order_items.order_id and user_id = '" +
+        user +
+        "'"
     );
-  let limit = 25;
-  if (page < 1) page = 1;
-  if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const info = rs.rows.slice(startIndex, endIndex);
-  console.log(info);
-  res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
+    let limit = 25;
+    if (page < 1) page = 1;
+    if (page > rs.rowCount / limit) page = Math.ceil(rs.rowCount / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const info = rs.rows.slice(startIndex, endIndex);
+    console.log(info);
+    res.json({ order: info, pageNumber: Math.ceil(rs.rowCount / limit) });
   } catch (error) {
     console.log(error);
   }
@@ -689,10 +710,38 @@ app.post("/cookerOrder", async (req, res) => {
 app.post("/complete", async (req, res) => {
   let id = req.body.order_id;
   try {
-    let rs = await pool.query("update order_items set status = 'Ready' where order_id = '"+id+"'");
-    res.json({result: true});
+    let rs = await pool.query(
+      "update order_items set status = 'Ready' where order_id = '" + id + "'"
+    );
+    res.json({ result: true });
   } catch (error) {
     console.log(error);
-    res.json({result: false});
+    res.json({ result: false });
   }
-})
+});
+app.post("/checkID", async (req, res) => {
+  let item_id = req.body.item_id;
+  try {
+    let rs = await pool.query(
+      "select * from menu where item_id = '" + item_id + "'"
+    );
+    if (!rs.rowCount) {
+      res.json({ result: true });
+    } else {
+      res.json({ result: false });
+    }
+  } catch (error) {}
+});
+app.post("/checkUser", async (req, res) => {
+  let user_id = req.body.user_id;
+  try {
+    let rs = await pool.query(
+      "select * from management where user_id = '" + user_id + "'"
+    );
+    if (!rs.rowCount) {
+      res.json({ result: true });
+    } else {
+      res.json({ result: false });
+    }
+  } catch (error) {}
+});
