@@ -57,13 +57,16 @@
                             <div id="addemployee" class="modal">
                                 <span onclick="document.getElementById('addemployee').style.display='none'" class="close"
                                     title="Close Modal">&times;</span>
-                                <form class="signform" method="POST" action="/addemployee">
+                                <form class="signform" method="POST" action="/addemployee" id="add-employee">
                                     <div class="form-inside">
                                         <h1 style="text-align: center">Add an Employee</h1>
                                         <input type="hidden" name="hidden" value="<%=remember%>">
                                         <label for="emusername">User</label>
                                         <input type="text" name="empusername" class="form-control" id="emusername" placeholder="Username"
                                             required autofocus>
+                                        <div class="warning-message">
+                                            User already exit. Please Try again!!
+                                        </div>
                                         <label for="empass">Password</label>
                                         <input type="password" name="emppass" class="form-control" id="empass"
                                             required>
@@ -259,6 +262,7 @@
                                 }
                             }
                         </script>
+                        <script src="/js/addEmployee.js"></script>
                 </body>
 
 </html>
