@@ -5,7 +5,7 @@
   * For Employees
   * For Manager
 ### 1. Login Site: Sound very *old-fashion* way but i too lazy to make a landing-page so i make people have to login first. And i enjoy it because some one will gonna suffering from it. :)
-#### (Disclaim: I don't know anything about Joey's Restaurant. I just a random name pop-up in my head and i google it ( ͡° ͜ʖ ͡°))
+#### (Disclaim: I don't know anything about Joey's Restaurant. It just a random name pop-up in my head and i google it ( ͡° ͜ʖ ͡°))
 ![login](/ScreenShot/Customer/unknown.png)
 
 ### 2. Customer Main Site: It have a navbar stick on the top and a little order icon stick at right-bottom. Cute <3.
