@@ -27,5 +27,27 @@
   * Employee but they only delivery
 #### Delivery: It will show which order can be delivery and some infomation about the order. Can i make it more detail? Yes. But no.
 ![employeemenu](/ScreenShot/Employee/orderem.png)
-#### Cooker
+#### Cooker: It will show which oreder can be finish. It only show the order he is in charge.
+![cookerorder](/ScreenShot/Employee/cooker.png)
 
+### 4. Manager Site: Fully control about information like menu, customer, employee and saling.
+#### Profile: like employee and customer, quiet simple.
+![managerPro](/ScreenShot/Manager/managerProfile.png)
+#### Customer Information: Show customer info and some show option.
+![cusin](/ScreenShot/Manager/cusInfo.png)
+#### Employee Information: He can changes, deletes and adds an employee. But he can't changes user_id and password of them. 
+![emin](/ScreenShot/Manager/emInfo.png)
+#### Menu Information: Can change, delete and add a menu. And yes, picture are allow to upload but only '.png' or '.jpeg'.
+![menuin](/ScreenShot/Manager/menuInfo.png)
+#### Saling: Will show how much the restaurant sold each day. Can choise day start and day end.
+![saling](/ScreenShot/Manager/saling.png) 
+
+### And a lot of kind if form like sign-up form(only avaiable for customer), change information form, change password form, .... And yes, that all i have.
+## Q&A
+ * Your UI such. Do you gonna improve it nerd?
+ > Yes. If i have time.
+ * How about responsive? How does it work on mobile device?
+ > Woa don't use it on your phone, it will broke your heart. It doesn't have responsive, not yet.
+ * How long did it take to finished this?
+ > Well i think about 4 months. It actually take me about a months and half. But i have to take care homework in college after a month do it. And yes, i forgot about it and did another project, its simple image downloader extension. And i just remember about it around 2 week ago. I like play game but after learn or do something. So this is a perfect excuse for me ( ͡° ͜ʖ ͡°).
+# Thankyou for reading. Hope you have beautyful day.
