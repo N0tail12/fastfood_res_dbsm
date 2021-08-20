@@ -42,7 +42,7 @@
 #### Saling: Will show how much the restaurant sold each day. Can choise day start and day end.
 ![saling](/ScreenShot/Manager/saling.png) 
 
-### And a lot of kind if form like sign-up form(only avaiable for customer), change information form, change password form, .... And yes, that all i have.
+### And a lot of kind of form like sign-up form(only avaiable for customer), change information form, change password form, .... And yes, that all i have.
 ## Q&A
  * Your UI such. Do you gonna improve it nerd?
  > Yes. If i have time.
