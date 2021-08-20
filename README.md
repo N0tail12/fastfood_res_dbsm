@@ -50,4 +50,6 @@
  > Woa don't use it on your phone, it will broke your heart. It doesn't have responsive, not yet.
  * How long did it take to finished this?
  > Well i think about 4 months. It actually take me about a months and half. But i have to take care homework in college after a month do it. And yes, i forgot about it and did another project, its simple image downloader extension. And i just remember about it around 2 week ago. I like play game but after learn or do something. So this is a perfect excuse for me ( ͡° ͜ʖ ͡°).
+ * Why don't you deploy it on heroku or netify so i can see it more objectivity?
+ > I tried but it keep failed. So you stuck with me.
 # Thankyou for reading. Hope you have beautyful day.
