@@ -19,4 +19,13 @@
 
 ### 3. Employee Site: It doesn't have much things to do because they just deleverly the order or finish it. I still can't think more function for them so this is all i got.
 
-![employeeFroflie]
+![employeeFroflie](/ScreenShot/Employee/employeeProfile.png)
+![employeemenu](/ScreenShot/Employee/menu.png)
+
+### About the Order function, there are 2 types of Employee
+  * Employee is Cooker
+  * Employee but they only delivery
+#### Delivery: It will show which order can be delivery and some infomation about the order. Can i make it more detail? Yes. But no.
+![employeemenu](/ScreenShot/Employee/orderem.png)
+#### Cooker
+
